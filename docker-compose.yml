@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - camagru_net
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./public:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - camagru_net
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: camagru
+      POSTGRES_USER: camagru_user
+      POSTGRES_PASSWORD: camagru_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - camagru_net
+
+volumes:
+  pgdata:
+
+networks:
+  camagru_net:

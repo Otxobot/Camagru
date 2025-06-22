@@ -1,0 +1,44 @@
+-- USERS
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    is_confirmed BOOLEAN DEFAULT FALSE,
+    confirmation_token VARCHAR(255),
+    reset_token VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- IMAGES
+CREATE TABLE images (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    filename VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- COMMENTS
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    image_id INTEGER REFERENCES images(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- LIKES
+CREATE TABLE likes (
+    id SERIAL PRIMARY KEY,
+    image_id INTEGER REFERENCES images(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(image_id, user_id) -- prevent multiple likes
+);
+
+-- PREFERENCES
+CREATE TABLE preferences (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    notify_on_comment BOOLEAN DEFAULT TRUE
+);

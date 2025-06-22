@@ -31,9 +31,9 @@ class Router {
     }
 
     public function dispatch() {
-        echo '<pre>';
-        print_r ($_SERVER);
-        echo '<pre>';
+        // echo '<pre>';
+        // print_r ($_SERVER);
+        // echo '<pre>';
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
         

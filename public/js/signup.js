@@ -1,6 +1,7 @@
 // Simple signup form handler
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signup-form');
+    console.log("passing through first event listener");
     
     if (signupForm) {
         signupForm.addEventListener('submit', handleSignup);
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function handleSignup(event) {
     event.preventDefault();
+    console.log("event", event);
     
     // Get form data
     const formData = new FormData(event.target);

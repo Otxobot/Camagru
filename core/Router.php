@@ -72,14 +72,21 @@ class Router {
 
         if (is_string($callback)) {
             // Format: "ControllerName@methodName"
-            list($controller, $method) = explode('@', $callback);
-            $controllerClass = "App\\Controllers\\{$controller}";
-            
-            if (class_exists($controllerClass)) {
-                $instance = new $controllerClass();
-                if (method_exists($instance, $method)) {
-                    return call_user_func_array([$instance, $method], $params);
+            echo '<pre>';
+            print_r($callback);
+            echo '<pre>';
+            if (strpos($callback, '@') !== false) {
+                list($controller, $method) = explode('@', $callback);
+                $controllerClass = "App\\Controllers\\{$controller}";
+                
+                if (class_exists($controllerClass)) {
+                    $instance = new $controllerClass();
+                    if (method_exists($instance, $method)) {
+                        return call_user_func_array([$instance, $method], $params);
+                    }
                 }
+            } else {
+                throw new Exception("Invalid callback format: expected 'Controller@method'");
             }
         }
 

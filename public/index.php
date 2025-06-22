@@ -32,8 +32,8 @@ $router->get('/signup', function() {
     include __DIR__ . '/views/signup.html';
 });
 
-// $router->post('/api/signup', 'AuthController@signup');
-$router->post('api/signup', '../app/controllers/AuthController.php'); 
+$router->post('/api/signup', 'AuthController@signup');
+// $router->post('/api/signup', '../app/controllers/AuthController.php'); 
 $router->post('/api/login', 'AuthController@login');
 $router->get('/api/logout', 'AuthController@logout');
 

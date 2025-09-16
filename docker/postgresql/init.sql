@@ -1,3 +1,5 @@
+
+\c camagru;
 -- USERS
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,

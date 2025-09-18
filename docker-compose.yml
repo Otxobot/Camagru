@@ -5,7 +5,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html/public
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
@@ -52,6 +52,7 @@ services:
 volumes:
   pgdata:
   pgadmin_data:
+  web_data: 
 
 networks:
   camagru_net:

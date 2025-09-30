@@ -23,7 +23,7 @@ require_once __DIR__ . '/../app/core/Router.php';
 
 $router = new Router();
 
-// Define routes
+// Routes
 $router->get('/', function() {
     include __DIR__ . '/views/home.html';
 });

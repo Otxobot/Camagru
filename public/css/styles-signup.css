@@ -1,4 +1,4 @@
-/* Simple styles for signup form */
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -72,7 +72,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Message styles */
 .message {
     padding: 12px;
     margin-bottom: 20px;
@@ -92,7 +91,6 @@ button:disabled {
     border: 1px solid #f5c6cb;
 }
 
-/* Simple responsive design */
 @media (max-width: 480px) {
     .container {
         margin: 20px auto;

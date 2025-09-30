@@ -7,9 +7,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./app:/var/www/html/app:ro   
-      - ./public:/var/www/html/public:ro
-    user: "1000:1000"
+      - .:/var/www/html/
     depends_on:
       - php
     networks:
@@ -20,7 +18,7 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     volumes:
-      - ./app:/var/www/html
+      - .:/var/www/html
     depends_on:
       - db
     networks:

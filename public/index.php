@@ -25,11 +25,11 @@ $router = new Router();
 
 // Routes
 $router->get('/', function() {
-    include __DIR__ . '/views/home.html';
+    include __DIR__ . '/views/home.php';
 });
 
 $router->get('/signup', function() {
-    include __DIR__ . '/views/signup.html';
+    include __DIR__ . '/views/signup.php';
 });
 
 $router->post('/api/signup', 'AuthController@signup');

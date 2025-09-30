@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <title>Sign Up | Camagru</title>
   <link rel="stylesheet" href="../css/styles-signup.css">
+  <link rel="stylesheet" href="../css/styles-home.css">
 </head>
 <body>
+  <?php include __DIR__ . '/shared/header.php'; ?>
+
   <main class="signup-container">
     <h2>Create Your Account</h2>
     <form id="signup-form" action="/register" method="POST">
@@ -29,6 +32,8 @@
       <div id="formError" class="error-message"></div>
     </form>
   </main>
+
+  <?php include __DIR__ . '/shared/footer.php'; ?>
 
   <script src="/js/signup.js"></script>
 </body>

@@ -7,8 +7,9 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./app:/var/www/html/app          # Share app with both containers  
-      - ./public:/var/www/html/public 
+      - ./app:/var/www/html/app:ro   
+      - ./public:/var/www/html/public:ro
+    user: "1000:1000"
     depends_on:
       - php
     networks:

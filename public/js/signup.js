@@ -1,7 +1,6 @@
 // Simple signup form handler
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signup-form');
-    console.log("passing through first event listener");
     
     if (signupForm) {
         signupForm.addEventListener('submit', handleSignup);
@@ -11,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
 async function handleSignup(event) {
     event.preventDefault();
     console.log("event", event);
+
+    console.log("look here bix");
     
     // Get form data
     const formData = new FormData(event.target);
@@ -19,6 +20,7 @@ async function handleSignup(event) {
         email: formData.get('email'),
         password: formData.get('password')
     };
+    console.log("signupData", signupData);
     
     // Basic validation
     if (!signupData.username || !signupData.email || !signupData.password) {
@@ -62,7 +64,7 @@ async function handleSignup(event) {
         }
         
     } catch (error) {
-        showMessage('Network error. Please try again.', 'error');
+        showMessage('Server error. Please try again.', 'error');
         console.error('Signup error:', error);
     } finally {
         // Reset button state

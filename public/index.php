@@ -21,6 +21,9 @@ require_once __DIR__ . '/../app/core/Router.php';
 //     }
 // });
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $router = new Router();
 
 // Routes

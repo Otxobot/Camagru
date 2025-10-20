@@ -13,9 +13,15 @@ class AuthController {
 
     public function signup() {
         header('Content-Type: application/json');
+        var_dump("debug_test");
         
         try {
             $input = json_decode(file_get_contents('php://input'), true);
+
+            xdebug_break();  // This will force a break
+            var_dump($input);
+            print_r("========HELLOBIXX======");
+            print_r($input);
             
             // Validate required fields
             if (!$input['username'] || !$input['email'] || !$input['password']) {

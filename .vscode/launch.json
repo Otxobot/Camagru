@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/html": "${workspaceFolder}"
+            },
+            "log": true,
+            "xdebugSettings": {
+                "max_children": 128,
+                "max_data": 512,
+                "max_depth": 3
+            }
+        }
+    ],
+    "tasks": [
+        {
+            "label": "Listen for Xdebug",
+            "type": "shell",
+            "command": "php -S localhost:9003",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "php",
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "."
+                }
+            }
+        }
+    ]
+}

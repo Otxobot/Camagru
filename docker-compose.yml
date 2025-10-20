@@ -19,6 +19,12 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/var/www/html
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+      XDEBUG_MODE: "debug"
+      XDEBUG_CONFIG: "client_host=host.docker.internal start_with_request=yes log=/var/log/xdebug.log"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - db
     networks:

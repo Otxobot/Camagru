@@ -14,6 +14,7 @@ class AuthController {
     public function signup() {
         header('Content-Type: application/json');
         var_dump("debug_test");
+        print_r("helloooo");
         
         try {
             $input = json_decode(file_get_contents('php://input'), true);

@@ -50,5 +50,5 @@ try {
     $router->dispatch();
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Internal Server Error']);
+    echo json_encode(['error' => 'Internal Server ErrorR']);
 }

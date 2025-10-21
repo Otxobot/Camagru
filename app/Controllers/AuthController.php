@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+require_once __DIR__ . '/../config/config.php';
 use App\Models\User;
 
 class AuthController {
@@ -13,32 +14,22 @@ class AuthController {
 
     public function signup() {
         header('Content-Type: application/json');
-        var_dump("debug_test");
-        print_r("helloooo");
         
         try {
             $input = json_decode(file_get_contents('php://input'), true);
-
-            xdebug_break();  // This will force a break
-            var_dump($input);
-            print_r("========HELLOBIXX======");
-            print_r($input);
             
-            // Validate required fields
             if (!$input['username'] || !$input['email'] || !$input['password']) {
                 http_response_code(400);
                 echo json_encode(['error' => 'All fields are required']);
                 return;
             }
 
-            // Validate email format
             if (!filter_var($input['email'], FILTER_VALIDATE_EMAIL)) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Invalid email format']);
                 return;
             }
 
-            // Check if user already exists
             if ($this->userModel->findByEmail($input['email'])) {
                 http_response_code(409);
                 echo json_encode(['error' => 'Email already registered']);
@@ -51,7 +42,6 @@ class AuthController {
                 return;
             }
 
-            // Create user
             $userId = $this->userModel->create([
                 'username' => $input['username'],
                 'email' => $input['email'],

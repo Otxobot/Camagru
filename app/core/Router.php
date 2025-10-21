@@ -31,42 +31,31 @@ class Router {
     }
 
     public function dispatch() {
-        // echo '<pre>';
-        // print_r ($_SERVER);
-        // echo '<pre>';
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
         
-        // Remove query parameters
         $uri = strtok($uri, '?');
         
-        print_r("entra aqui");
-
-        // Check for exact match first
-        print_r($this->routes[$method]);
-        print_r($this->routes[$method][$uri]);
+        
         if (isset($this->routes[$method][$uri])) {
             return $this->executeCallback($this->routes[$method][$uri]);
         }
 
-        print_r("entra aqui1");
 
-        // Check for dynamic routes
         foreach ($this->routes[$method] ?? [] as $route => $callback) {
             $pattern = $this->convertToRegex($route);
             if (preg_match($pattern, $uri, $matches)) {
-                array_shift($matches); // Remove full match
+                array_shift($matches);
                 return $this->executeCallback($callback, $matches);
             }
         }
 
-        // 404 Not Found
         http_response_code(404);
         echo "404 - Page Not Found";
     }
 
     private function convertToRegex($route) {
-        // Convert {id} to capturing group
+        
         $pattern = preg_replace('/\{([^}]+)\}/', '([^/]+)', $route);
         return '#^' . $pattern . '$#';
     }
@@ -77,10 +66,6 @@ class Router {
         }
 
         if (is_string($callback)) {
-            // Format: "ControllerName@methodName"
-            // echo '<pre>';
-            // print_r($callback);
-            // echo '<pre>';
             if (strpos($callback, '@') !== false) {
                 list($controller, $method) = explode('@', $callback);
                 $controllerClass = "App\\Controllers\\{$controller}";

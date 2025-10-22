@@ -1,15 +1,14 @@
 <?php
 namespace App\Controllers;
 
-require_once __DIR__ . '/../config/config.php';
+use App\Core\Database;
 use App\Models\User;
 
 class AuthController {
     private $userModel;
 
     public function __construct() {
-        global $pdo;
-        $this->userModel = new User($pdo);
+        $this->userModel = new User(Database::getInstance());
     }
 
     public function signup() {

@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-require_once __DIR__ . '/../../config/config.php';
-
+use PDO;
 
 class User {
     private $pdo;
 
-    public function __construct($pdo) {
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 

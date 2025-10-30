@@ -12,6 +12,7 @@ class AuthController {
     }
 
     public function signup() {
+        xdebug_info();
         header('Content-Type: application/json');
         
         try {

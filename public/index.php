@@ -36,10 +36,14 @@ $router->get('/signup', function() {
     include __DIR__ . '/views/signup.php';
 });
 
+$router->get('/login', function() {
+    include __DIR__ . '/views/login.php';
+});
+
 $router->post('/api/signup', 'AuthController@signup');
-// $router->post('/api/signup', '../app/controllers/AuthController.php'); 
 $router->post('/api/login', 'AuthController@login');
 $router->get('/api/logout', 'AuthController@logout');
+
 
 // API routes for authenticated users
 // $router->get('/dashboard', 'AuthController@dashboard');

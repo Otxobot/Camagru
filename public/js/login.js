@@ -36,7 +36,9 @@ async function handleLogin(event) {
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/home'; //cambiar esto a dashboard
+            // window.location.href = '/';
+            showMessage('Logged in successfully!', 'success');
+            event.target.reset(); // Clear form
         } else {
             showMessage(result.error || 'Login failed', 'error');
         }

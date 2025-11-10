@@ -12,7 +12,6 @@ class AuthController {
     }
 
     public function signup() {
-        xdebug_info();
         header('Content-Type: application/json');
         
         try {
@@ -76,7 +75,7 @@ class AuthController {
 
             $user = $this->userModel->findByEmail($input['email']);
             
-            if ($user && password_verify($input['password'], $user['password'])) {
+            if ($user && password_verify($input['password'], $user['password_hash'])) {
                 // Start session
                 session_start();
                 $_SESSION['user_id'] = $user['id'];
@@ -123,7 +122,7 @@ class AuthController {
     private function requireAuth() {
         session_start();
         if (!isset($_SESSION['user_id'])) {
-            http_response_code(401);
+            http_response_code(401);    
             echo json_encode(['error' => 'Authentication required']);
             return false;
         }

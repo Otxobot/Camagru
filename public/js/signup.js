@@ -45,6 +45,7 @@ async function handleSignup(event) {
     submitButton.disabled = true;
     
     try {
+        console.log("pasa por aqui");
         // Send signup request
         const response = await fetch('/api/signup', {
             method: 'POST',
@@ -53,8 +54,10 @@ async function handleSignup(event) {
             },
             body: JSON.stringify(signupData)
         });
-        
+        console.log("aver por auqi")
         const result = await response.json();
+
+        console.log("response", response);
         
         if (response.ok) {
             showMessage('Account created successfully!', 'success');

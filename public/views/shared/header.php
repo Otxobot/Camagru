@@ -1,3 +1,4 @@
+
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
         <div class="container-fluid">
@@ -18,11 +19,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/gallery">Gallery</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/signup">Signup</a> </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
+
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">My Dashboard</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="logout-button" role="button">Logout</a>
+                        </li>
+
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">Signup</a> </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>

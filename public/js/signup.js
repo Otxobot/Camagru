@@ -1,4 +1,4 @@
-// Simple signup form handler
+
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signup-form');
     
@@ -9,11 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function handleSignup(event) {
     event.preventDefault();
-    console.log("event", event);
-
-    console.log("look here bix");
     
-    // Get form data
     const formData = new FormData(event.target);
     const signupData = {
         username: formData.get('username'),
@@ -22,7 +18,6 @@ async function handleSignup(event) {
     };
     console.log("signupData", signupData);
     
-    // Basic validation
     if (!signupData.username || !signupData.email || !signupData.password) {
         showMessage('All fields are required', 'error');
         return;
@@ -33,20 +28,19 @@ async function handleSignup(event) {
         return;
     }
     
-    if (signupData.password.length < 6) {
-        showMessage('Password must be at least 6 characters long', 'error');
-        return;
-    }
+    // DESCOMENTAR ESTO, PERO PARA PRUEBAS ESTA COMENTADO
+    // if (!isComplexPassword(signupData.password)) {
+    //     const complexityError = getPasswordComplexityError(signupData.password);
+    //     showMessage(complexityError || 'Password does not meet complexity requirements', 'error');
+    //     return;
+    // }
     
-    // Show loading state
     const submitButton = event.target.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
     submitButton.textContent = 'Creating account...';
     submitButton.disabled = true;
     
     try {
-        console.log("pasa por aqui");
-        // Send signup request
         const response = await fetch('/api/signup', {
             method: 'POST',
             headers: {
@@ -57,11 +51,10 @@ async function handleSignup(event) {
         console.log("aver por auqi")
         const result = await response.json();
 
-        console.log("response", response);
         
         if (response.ok) {
             showMessage('Account created successfully!', 'success');
-            event.target.reset(); // Clear form
+            event.target.reset();
         } else {
             showMessage(result.error || 'Signup failed', 'error');
         }
@@ -70,7 +63,6 @@ async function handleSignup(event) {
         showMessage('Server error. Please try again.', 'error');
         console.error('Signup error:', error);
     } finally {
-        // Reset button state
         submitButton.textContent = originalText;
         submitButton.disabled = false;
     }
@@ -82,18 +74,15 @@ function isValidEmail(email) {
 }
 
 function showMessage(message, type) {
-    // Remove existing messages
     const existingMessage = document.querySelector('.message');
     if (existingMessage) {
         existingMessage.remove();
     }
     
-    // Create new message
     const messageDiv = document.createElement('div');
     messageDiv.className = `message message-${type}`;
     messageDiv.textContent = message;
     
-    // Insert at top of form or body
     const form = document.getElementById('signup-form');
     if (form) {
         form.insertBefore(messageDiv, form.firstChild);
@@ -101,10 +90,38 @@ function showMessage(message, type) {
         document.body.insertBefore(messageDiv, document.body.firstChild);
     }
     
-    // Auto-remove after 5 seconds
     setTimeout(() => {
         if (messageDiv.parentNode) {
             messageDiv.remove();
         }
     }, 5000);
+}
+
+function isComplexPassword(password) {
+
+    if (password.length < 8) {
+        return false;
+    }
+
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    return hasUpperCase && hasLowerCase && hasNumber;
+}
+
+function getPasswordComplexityError(password) {
+    if (password.length < 8) {
+        return 'Password must be at least 8 characters long.';
+    }
+    if (!(/[A-Z]/.test(password))) {
+        return 'Password must contain at least one uppercase letter.';
+    }
+    if (!(/[a-z]/.test(password))) {
+        return 'Password must contain at least one lowercase letter.';
+    }
+    if (!(/[0-9]/.test(password))) {
+        return 'Password must contain at least one number.';
+    }
+    return '';
 }

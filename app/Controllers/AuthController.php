@@ -29,6 +29,17 @@ class AuthController {
                 return;
             }
 
+            //===============================================
+            //=ACUERDATE DE DESCOMENTAR ESTO!!!!!!!!!!!!!!!!=
+            //===============================================
+
+            // $complexityCheck = $this->isComplexPassword($input['password']);
+            // if ($complexityCheck !== true) {
+            //     http_response_code(400);
+            //     echo json_encode($complexityCheck);
+            //     return;
+            // }
+
             if ($this->userModel->findByEmail($input['email'])) {
                 http_response_code(409);
                 echo json_encode(['error' => 'Email already registered']);
@@ -126,6 +137,34 @@ class AuthController {
             echo json_encode(['error' => 'Authentication required']);
             return false;
         }
+        return true;
+    }
+
+    private function isComplexPassword($password) {
+
+        if (strlen($password) < 8) {
+            return ['error' => 'Password must be at least 8 characters long'];
+        }
+
+        $errors = [];
+        
+        if (!preg_match('/[A-Z]/', $password)) {
+            $errors[] = 'one uppercase letter';
+        }
+
+        if (!preg_match('/[a-z]/', $password)) {
+            $errors[] = 'one lowercase letter';
+        }
+
+        if (!preg_match('/[0-9]/', $password)) {
+            $errors[] = 'one number';
+        }
+
+        if (!empty($errors)) {
+            $message = 'Password must contain: ' . implode(', ', $errors) . '.';
+            return ['error' => $message];
+        }
+
         return true;
     }
 }

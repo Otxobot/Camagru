@@ -22,8 +22,6 @@ async function handleLogin(event) {
 
     try {
 
-        console.log("easdlñkfjasdñlfkj")
-
         showMessage("Trying login", 'success'); 
         const response = await fetch('/api/login', {
             method: 'POST',

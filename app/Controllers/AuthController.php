@@ -52,10 +52,13 @@ class AuthController {
                 return;
             }
 
+            $confirmationToken = bin2hex(random_bytes(32));
+
             $userId = $this->userModel->create([
                 'username' => $input['username'],
                 'email' => $input['email'],
-                'password' => password_hash($input['password'], PASSWORD_DEFAULT)
+                'password' => password_hash($input['password'], PASSWORD_DEFAULT),
+                'confirmation_token' => $confirmationToken
             ]);
 
             if ($userId) {
@@ -69,6 +72,40 @@ class AuthController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'Server error']);
+        }
+    }
+
+    public function verifyEmail() {
+        $token = $_GET['token'] ?? '';
+        
+        if (!$token) {
+            $this->renderVerificationResult(false, 'Invalid verification link.');
+            return;
+        }
+        
+        try {
+            $user = $this->userModel->findByConfirmationToken($token);
+            
+            if (!$user) {
+                $this->renderVerificationResult(false, 'Invalid or expired verification link.');
+                return;
+            }
+            
+            if ($user['is_confirmed']) {
+                $this->renderVerificationResult(true, 'Your account is already verified!');
+                return;
+            }
+            
+            $verified = $this->userModel->confirmEmail($user['id']);
+            
+            if ($verified) {
+                $this->renderVerificationResult(true, 'Your account has been verified successfully!');
+            } else {
+                $this->renderVerificationResult(false, 'Verification failed. Please try again.');
+            }
+            
+        } catch (Exception $e) {
+            $this->renderVerificationResult(false, 'An error occurred during verification.');
         }
     }
 

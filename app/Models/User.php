@@ -38,4 +38,23 @@ class User {
         
         return $stmt->fetchColumn();
     }
+
+    public function findByConfirmationToken($token) {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM users
+            WHERE confirmation_token = :token
+            AND confirmation_token IS NOT NULL
+        ");
+        $stmt->execute(['token' => $token]);
+        return $stmt->fetch();
+    }
+
+    public function confirmEmail($userId) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users
+            SET is_confirmed = TRUE, confirmation_token = NULL
+            WHERE id = :id
+        ");
+        return $stmt->execute([':id' => $userId]);
+    }
 }

@@ -43,6 +43,7 @@ $router->get('/login', function() {
 $router->post('/api/signup', 'AuthController@signup');
 $router->post('/api/login', 'AuthController@login');
 $router->get('/api/logout', 'AuthController@logout');
+$router->get('/verify-email', 'AuthController@verifyEmail');
 
 
 // API routes for authenticated users

@@ -112,6 +112,7 @@ class AuthController {
                 $this->renderVerificationResult(false, 'Invalid or expired verification link.');
                 return;
             }
+
             
             if ($user['is_confirmed']) {
                 $this->renderVerificationResult(true, 'Your account is already verified!');

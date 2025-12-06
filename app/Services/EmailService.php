@@ -12,8 +12,8 @@ class EmailService {
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',
-            'From: noreply@camagru.com',
-            'Reply-To: noreply@camagru.com',
+            'From: camagru18@gmail.com',
+            'Reply-To: camagru18@gmail.com',
             'X-Mailer: PHP/' . phpversion()
         ];
 

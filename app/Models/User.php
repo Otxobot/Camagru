@@ -25,15 +25,16 @@ class User {
 
     public function create($data) {
         $stmt = $this->pdo->prepare("
-            INSERT INTO users (username, email, password_hash)
-            VALUES (:username, :email, :password)
+            INSERT INTO users (username, email, password_hash, confirmation_token)
+            VALUES (:username, :email, :password, :confirmation_token)
             RETURNING id
         ");
         
         $stmt->execute([
             ':username' => $data['username'],
             ':email' => $data['email'],
-            ':password' => $data['password']
+            ':password' => $data['password'],
+            ':confirmation_token' => $data['confirmation_token']
         ]);
         
         return $stmt->fetchColumn();

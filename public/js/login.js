@@ -37,6 +37,7 @@ async function handleLogin(event) {
             // window.location.href = '/';
             showMessage('Logged in successfully!', 'success');
             event.target.reset(); // Clear form
+            window.location.href = '/';
         } else {
             showMessage(result.error || 'Login failed', 'error');
         }

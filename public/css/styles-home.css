@@ -154,7 +154,7 @@ p {
     margin: 0 auto;
     padding: 0 1rem; /* Add horizontal padding for smaller screens */
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 

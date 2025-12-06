@@ -1,11 +1,9 @@
-// Add this to your mobile-nav.js or a similar file
 
 document.addEventListener('DOMContentLoaded', function() {
-    // ... (your existing toggleMobileNav function can be here) ...
+    const logoutForm = document.getElementById('logout-form');
 
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', handleLogout);
+    if (logoutForm) {
+        logoutForm.addEventListener('click', handleLogout);
     }
 });
 
@@ -21,13 +19,40 @@ async function handleLogout(event) {
 
         if (response.ok) {
             // Success! Redirect to the homepage
+            showMessage("Logged out succesfully");
             window.location.href = '/';
         } else {
             alert(result.error || 'Logout failed.');
+            showMessage(result.error || 'Logout failed', 'error');
         }
 
     } catch (error) {
+        showMessage('Server error. Please try again.', 'error');
         console.error('Logout error:', error);
-        alert('Server error during logout.');
     }
+}
+
+function showMessage(message, type) {
+
+    const existingMessage = document.querySelector('.message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${type}`;
+    messageDiv.textContent = message;
+    
+    const form = document.getElementById('signup-form');
+    if (form) {
+        form.insertBefore(messageDiv, form.firstChild);
+    } else {
+        document.body.insertBefore(messageDiv, document.body.firstChild);
+    }
+    
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.remove();
+        }
+    }, 5000);
 }

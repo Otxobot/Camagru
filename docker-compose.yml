@@ -22,6 +22,11 @@ services:
     environment:
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       PHP_IDE_CONFIG: "serverName=Docker"
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

@@ -40,6 +40,10 @@ $router->get('/login', function() {
     include __DIR__ . '/views/login.php';
 });
 
+$router->get('/logout', function() {
+    include __DIR__ . '/views/logout.php';
+});
+
 $router->post('/api/signup', 'AuthController@signup');
 $router->post('/api/login', 'AuthController@login');
 $router->get('/api/logout', 'AuthController@logout');

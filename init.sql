@@ -9,6 +9,7 @@ CREATE TABLE users (
     is_confirmed BOOLEAN DEFAULT FALSE,
     confirmation_token VARCHAR(255),
     reset_token VARCHAR(255),
+    reset_token_expires TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

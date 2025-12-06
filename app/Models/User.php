@@ -58,4 +58,21 @@ class User {
         ");
         return $stmt->execute([':id' => $userId]);
     }
+
+    public function storeResetToken($userId, $resetToken) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users
+            SET reset_token = :reset_token,
+                reset_token_expires = :expires
+            WHERE id = :user_id
+        ");
+
+        $expires = date('Y-m-d H:i:s', time() + 3600);
+
+        $stmt->execute([
+            ':reset_token' => $resetToken,
+            ':expires' => $expires,
+            ':user_id' => $userId
+        ]);
+    }
 }

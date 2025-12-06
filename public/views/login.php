@@ -37,6 +37,10 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <button type="submit" class="btn w-100 btn-accent">Login</button>
+
+        <div class="mb-3 mt-1">
+            <a href="/forgot-password" style="font-size: 14px; color: #00bcd4; text-decoration: none;">Did you forget your password?</a>
+        </div>
         
         <div id="formError" class="error-message"></div>
     </form>

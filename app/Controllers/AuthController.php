@@ -166,6 +166,34 @@ class AuthController {
         ";
     }
 
+    public function forgotPassword() {
+        header('Content-type: application/json');
+
+        
+        try {
+
+            $current_user = $this->getCurrentUser();
+
+            if ($current_user) {
+                $resetToken = bin2hex(random_bytes(32));
+
+                $this->userModel->storeResetToken($current_user['id'], $resetToken);
+
+                $emailSent = $this->emailService->sendResetPasswordEmail(
+                    $user['email'],
+                    $user['username'],
+                    $resetToken
+                );
+            }
+
+            echo json_encode(['message' => 'If the email exists, a reset link has been sent']);
+            
+        } catch(Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Server error']);
+        }
+    }
+
     public function login() {
         header('Content-Type: application/json');
         
@@ -239,6 +267,16 @@ class AuthController {
             return false;
         }
         return true;
+    }
+
+    private function getCurrentUser() {
+        session_start();
+        
+        if (!isset($_SESSION['user_id'])) {
+            return null;
+        }
+        
+        return $this->userModel->findById($_SESSION['user_id']);
     }
 
     private function isComplexPassword($password) {

@@ -26,7 +26,7 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link" href="/logout" id="logout-button" role="button">Logout</a>
+                            <a class="nav-link" href="#" id="logout-button" role="button" onclick="handleLogout(event)">Logout</a>
                         </li>
 
                     <?php else: ?>

@@ -30,5 +30,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
   <script src="/js/mobile-nav.js"></script>
   <script src="/js/signup.js"></script>
+  <script src="/js/logout.js"></script>
 </body>
 </html>

@@ -1,9 +1,17 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
+    const forgotPasswordLink = document.querySelector('a[href="/forgot-password"]');
 
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
+    }
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            showForgotPasswordModal();
+        });
     }
 });
 
@@ -34,7 +42,6 @@ async function handleLogin(event) {
         const result = await response.json();
 
         if (response.ok) {
-            // window.location.href = '/';
             showMessage('Logged in successfully!', 'success');
             event.target.reset(); // Clear form
             window.location.href = '/';
@@ -45,6 +52,35 @@ async function handleLogin(event) {
         showMessage('Server error. Please try again.', 'error');
         console.error('Login error:', error);
     }
+}
+
+function showForgotPasswordModal() {
+    const email = prompt("Enter your email address:");
+    if (email) {
+        handleForgotEmail(email);
+    }
+}
+
+function handleForgotEmail(email) {
+    fetch('/forgot-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Password reset email sent!');
+        } else {
+            alert(data.message || 'Error sending reset email');
+        }
+    })
+    .catch(error => {
+        console.error('Error', error);
+        alert('An error ocurred. Please try again.');
+    })
 }
 
 function showMessage(message, type) {

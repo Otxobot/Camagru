@@ -75,4 +75,52 @@ class User {
             ':user_id' => $userId
         ]);
     }
+
+    public function findByResetToken($token) {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM users
+            WHERE reset_token = :token
+            AND reset_token IS NOT NULL
+        ");
+        $stmt->execute(["token" => $token]);
+        return $stmt->fetch();
+    }
+
+    public function isResetTokenExpired($token) {
+        $stmt = $this->pdo->prepare("
+            SELECT reset_token_expires FROM users
+            WHERE reset_token = :token
+            AND reset_token IS NOT NULL
+        ");
+        $stmt->execute(['token' => $token]);
+        $result = $stmt->fetch();
+
+        if (!$result || !$result['reset_token_expires']) {
+            return true;
+        }
+
+        return strtotime($result['reset_token_expires']) < time();
+    }
+
+    public function updatePassword($userId, $hashedPassword) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users
+            SET password_hash = :password_hash
+            WHERE id = :user_id
+        ");
+        return $stmt->execute([
+            ':password_hash' => $hashedPassword,
+            ':user_id' => $userId
+        ]);
+    }
+
+    public function clearResetToken($userId) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users
+            SET reset_token = NULL,
+                reset_token_expires = NULL
+            WHERE id = :user_id
+        ");
+        return $stmt->execute([':user_id' => $userId]);
+    }
 }

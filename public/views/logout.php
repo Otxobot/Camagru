@@ -27,9 +27,9 @@ if (session_status() === PHP_SESSION_NONE) {
         
         <button type="submit" class="btn w-100 btn-accent">Logout</button>
         
-        <div class="text-center mt-3">
+        <!-- <div class="text-center mt-3">
             <a href="/" class="btn btn-secondary">Cancel</a>
-        </div>
+        </div> -->
         
         <div id="formError" class="error-message"></div>
     </form>

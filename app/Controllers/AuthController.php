@@ -45,13 +45,13 @@ class AuthController {
 
             if ($this->userModel->findByEmail($input['email'])) {
                 http_response_code(409);
-                echo json_encode(['error' => 'Email already registered']);
+                echo json_encode(['error' => 'This email is already taken']);
                 return;
             }
 
             if ($this->userModel->findByUsername($input['username'])) {
                 http_response_code(409);
-                echo json_encode(['error' => 'Username already taken']);
+                echo json_encode(['error' => 'This username is already taken']);
                 return;
             }
 
@@ -169,19 +169,19 @@ class AuthController {
     public function forgotPassword() {
         header('Content-type: application/json');
 
-        
         try {
-
-            $current_user = $this->getCurrentUser();
-
+            $input = json_decode(file_get_contents('php://input'), true);
+        
+            $current_user = $this->userModel->findByEmail($input['email']);
+            
             if ($current_user) {
                 $resetToken = bin2hex(random_bytes(32));
 
                 $this->userModel->storeResetToken($current_user['id'], $resetToken);
 
                 $emailSent = $this->emailService->sendResetPasswordEmail(
-                    $user['email'],
-                    $user['username'],
+                    $current_user['email'],
+                    $current_user['username'],
                     $resetToken
                 );
             }
@@ -192,6 +192,168 @@ class AuthController {
             http_response_code(500);
             echo json_encode(['error' => 'Server error']);
         }
+    }
+
+    public function resetPassword() {
+
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+                $token = $_GET['token'] ?? '';
+
+                if (!$token) {
+                    $this->renderResetPasswordResult(false, 'Invalid reset link.');
+                    return;
+                }
+
+                try {
+                    $user = $this->userModel->findByResetToken($token);
+                    
+                    if (!$user) {
+                        $this->renderResetPasswordResult(false, 'Invalid or expired reset link.');
+                        return;
+                    }
+                    
+                    if ($this->userModel->isResetTokenExpired($token)) {
+                        $this->renderResetPasswordResult(false, 'Reset link has expired. Please request a new one.');
+                        return;
+                    }
+                    
+                    $this->renderResetPasswordForm($token);
+                    
+                } catch (Exception $e) {
+                    $this->renderResetPasswordResult(false, 'An error occurred. Please try again.');
+                }
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $token = $_POST['reset_token'] ?? '';
+
+                if (!$token) {
+                    $this->renderResetPasswordResult(false, 'Invalid reset token.');
+                    return;
+                }
+
+                try {
+                    $newPassword = $_POST['password'] ?? '';
+                    $confirmPassword = $_POST['confirm_password'] ?? '';
+                    
+                    if (!$newPassword || !$confirmPassword) {
+                        $this->renderResetPasswordResult(false, 'Please fill in all fields.');
+                        return;
+                    }
+                    
+                    if ($newPassword !== $confirmPassword) {
+                        $this->renderResetPasswordResult(false, 'Passwords do not match.');
+                        return;
+                    }
+                    
+                    // Uncomment when ready to enforce password complexity
+                    // $complexityCheck = $this->isComplexPassword($newPassword);
+                    // if ($complexityCheck !== true) {
+                    //     $this->renderResetPasswordResult(false, $complexityCheck['error']);
+                    //     return;
+                    // }
+                    
+                    $user = $this->userModel->findByResetToken($token);
+                    
+                    if (!$user || $this->userModel->isResetTokenExpired($token)) {
+                        $this->renderResetPasswordResult(false, 'Invalid or expired reset link.');
+                        return;
+                    }
+                    
+                    $passwordUpdated = $this->userModel->updatePassword($user['id'], password_hash($newPassword, PASSWORD_DEFAULT));
+                    $tokenCleared = $this->userModel->clearResetToken($user['id']);
+                    
+                    if ($passwordUpdated && $tokenCleared) {
+                        $this->renderResetPasswordResult(true, 'Your password has been reset successfully!');
+                    } else {
+                        $this->renderResetPasswordResult(false, 'Failed to reset password. Please try again.');
+                    }
+                    
+                } catch (Exception $e) {
+                    $this->renderResetPasswordResult(false, 'An error occurred during password reset.');
+                }
+            }
+    }
+ 
+    private function renderResetPasswordForm($token) {
+        echo "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Reset Password | Camagru</title>
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+            <link rel='stylesheet' href='/css/styles-home.css'>
+        </head>
+        <body>
+            <div class='container mt-5'>
+                <div class='row justify-content-center'>
+                    <div class='col-md-6'>
+                        <div class='card'>
+                            <div class='card-body'>
+                                <h3 class='card-title text-center'>Reset Your Password</h3>
+                                <form method='POST'>
+                                    <div class='mb-3'>
+                                        <label for='password' class='form-label'>New Password</label>
+                                        <input type='password' class='form-control' id='password' name='password' required>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='confirm_password' class='form-label'>Confirm New Password</label>
+                                        <input type='password' class='form-control' id='confirm_password' name='confirm_password' required>
+                                    </div>
+                                    <input type='hidden' name='reset_token' value='{$token}'>
+                                    <div class='d-grid'>
+                                        <button type='submit' class='btn btn-primary'>Reset Password</button>
+                                    </div>
+                                </form>
+                                <div class='text-center mt-3'>
+                                    <a href='/' class='btn btn-link'>Back to Home</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+    }
+
+    private function renderResetPasswordResult($success, $message) {
+        $status = $success ? 'success' : 'error';
+        $title = $success ? 'Password Reset Successful' : 'Password Reset Failed';
+
+        echo "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>{$title} | Camagru</title>
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+            <link rel='stylesheet' href='/css/styles-home.css'>
+        </head>
+        <body>
+            <div class='container mt-5'>
+                <div class='row justify-content-center'>
+                    <div class='col-md-6'>
+                        <div class='card'>
+                            <div class='card-body text-center'>
+                                <h3 class='card-title'>{$title}</h3>
+                                <p class='card-text'>{$message}</p>
+                                <a href='/' class='btn btn-primary'>Go to Home</a>
+                                " . ($success ? "<a href='/login' class='btn btn-success ms-2'>Login Now</a>" : "<a href='/forgot-password' class='btn btn-secondary ms-2'>Try Again</a>") . "
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
     }
 
     public function login() {
@@ -267,16 +429,6 @@ class AuthController {
             return false;
         }
         return true;
-    }
-
-    private function getCurrentUser() {
-        session_start();
-        
-        if (!isset($_SESSION['user_id'])) {
-            return null;
-        }
-        
-        return $this->userModel->findById($_SESSION['user_id']);
     }
 
     private function isComplexPassword($password) {

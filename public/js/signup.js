@@ -53,7 +53,7 @@ async function handleSignup(event) {
 
         
         if (response.ok) {
-            showMessage('Account created successfully!', 'success');
+            showMessage('Account created successfully! Please check your email to verify your account.', 'success');
             event.target.reset();
         } else {
             showMessage(result.error || 'Signup failed', 'error');

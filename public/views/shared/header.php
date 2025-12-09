@@ -24,10 +24,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/dashboard">My Dashboard</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile" role="button">Profile</a>
+                        </li>
                         
                         <li class="nav-item">
                             <a class="nav-link" href="#" id="logout-button" role="button" onclick="handleLogout(event)">Logout</a>
                         </li>
+
 
                     <?php else: ?>
                         <li class="nav-item">

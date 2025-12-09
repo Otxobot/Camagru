@@ -44,6 +44,10 @@ $router->get('/logout', function() {
     include __DIR__ . '/views/logout.php';
 });
 
+$router->get('/profile', function() {
+    include __DIR__ . '/views/profile.php';
+});
+
 $router->post('/api/signup', 'AuthController@signup');
 $router->post('/api/login', 'AuthController@login');
 $router->post('/api/logout', 'AuthController@logout');

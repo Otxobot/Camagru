@@ -123,4 +123,31 @@ class User {
         ");
         return $stmt->execute([':user_id' => $userId]);
     }
+
+    public function updateUsername($userId, $newUsername) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users
+            SET username = :new_username
+            WHERE id = :user_id
+        ");
+        return $stmt->execute([
+            ':new_username' => $newUsername,
+            ':user_id' => $userId
+        ]);
+    }
+
+    //Aqui igual tiene que ir confirmationToken = null en el parametro, no estoy seguro todavia
+    public function updateEmail($userId, $newEmail, $confirmationToken) {
+        $stmt = $this->pdo->prepare("
+            UPDATE users 
+            SET email = ?, 
+                confirmation_token = ?, 
+                is_confirmed = ? 
+            WHERE id = ?
+        ");
+        
+        $isConfirmed = $confirmationToken ? 0 : 1;
+        
+        return $stmt->execute([$newEmail, $confirmationToken, $isConfirmed, $userId]);
+    }
 }

@@ -20,6 +20,7 @@ if (!isset($_SESSION['user_id'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/styles-home.css">
   <link rel="stylesheet" href="../css/styles-signup.css">
+  <link rel="stylesheet" href="../css/styles-profile.css">
 </head>
 <body>
 <?php include __DIR__ . '/shared/header.php'; ?>
@@ -28,17 +29,33 @@ if (!isset($_SESSION['user_id'])) {
 <div class="signup-container">
     <h2 class="text-center">My Profile</h2>
     
-    <!-- User Information Section -->
+    
     <div class="profile-section">
         <h4 class="section-title">Account Information</h4>
         <div class="user-info">
             <p><strong>Username:</strong> <?php echo htmlspecialchars($_SESSION['username']); ?></p>
-            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
-            <p><strong>Member Since:</strong> <span id="member-since">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="user-email"><?php echo htmlspecialchars($_SESSION['email']); ?></span></p>
+            <p><strong>Member Since:</strong> <span id="member-since"><?php echo htmlspecialchars($_SESSION['created_at']); ?></span></p>
         </div>
     </div>
+    
+    <div class="profile-section">
+        <h4 class="section-title">Change username</h4>
+        <form id="username-form">
+            <div class="mb-3">
+                <label for="current_username" class="form-label">Current Username:</label>
+                <input type="username" id="current_username" class="form-control"
+                        value="<?php echo htmlspecialchars($_SESSION['username']); ?>" readonly>
 
-    <!-- Change Password Section -->
+                <label for="new_username" class="form-label">New Username:</label>
+                <input type="username" id="new_username" class="form-control"
+                    required placeholder="Enter new username">
+            </div>
+
+            <button type="submit" class="btn w-100 btn-accent mb-3">Update Username</button>
+        </form>
+    </div>
+
     <div class="profile-section">
         <h4 class="section-title">Change Password</h4>
         <form id="password-form">
@@ -64,22 +81,23 @@ if (!isset($_SESSION['user_id'])) {
         </form>
     </div>
 
-    <!-- Email Preferences Section -->
     <div class="profile-section">
-        <h4 class="section-title">Email Preferences</h4>
-        <form id="preferences-form">
+        <h4 class="section-title">Change email</h4>
+        <form id="email-form">
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="notify_comments" name="notify_comments" checked>
-                <label class="form-check-label" for="notify_comments">
-                    Notify me when someone comments on my images
-                </label>
+                <label for="current_email" class="form-label">Current Email:</label>
+                <input type="email" id="current_email" class="form-control"
+                        value="<?php echo htmlspecialchars($_SESSION['email']); ?>" readonly>
+
+                <label for="new_email" class="form-label">New Email:</label>
+                <input type="username" id="new_email" class="form-control"
+                    required placeholder="Enter new email">
             </div>
             
-            <button type="submit" class="btn w-100 btn-accent mb-3">Save Preferences</button>
+            <button type="submit" class="btn w-100 btn-accent mb-3">Update email</button>
         </form>
     </div>
-
-    <!-- Account Stats Section -->
+    
     <div class="profile-section">
         <h4 class="section-title">My Statistics</h4>
         <div class="stats-grid">
@@ -98,7 +116,6 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
-    <!-- Danger Zone -->
     <div class="profile-section danger-zone">
         <h4 class="section-title text-danger">Danger Zone</h4>
         <p class="text-muted small">These actions are permanent and cannot be undone.</p>
@@ -115,136 +132,6 @@ if (!isset($_SESSION['user_id'])) {
 
 <script src="/js/profile.js"></script>
 <script src="/js/mobile-nav.js"></script>
-
-<style>
-.profile-section {
-    margin-bottom: 30px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.profile-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.section-title {
-    color: var(--color-accent);
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-.user-info p {
-    margin-bottom: 8px;
-    color: var(--color-text-light);
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.stat-item {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-number {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--color-accent);
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-    margin-top: 5px;
-}
-
-.form-check-input:checked {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-}
-
-.form-check-input:focus {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.4);
-}
-
-.form-check-label {
-    color: var(--color-text-light);
-}
-
-.danger-zone {
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    border-radius: 8px;
-    padding: 20px;
-}
-
-.btn-outline-danger {
-    color: #dc3545;
-    border-color: #dc3545;
-}
-
-.btn-outline-danger:hover {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-}
-
-.message {
-    padding: 12px;
-    margin: 15px 0;
-    border-radius: 6px;
-    font-weight: 500;
-}
-
-.message-success {
-    background-color: rgba(40, 167, 69, 0.2);
-    color: #28a745;
-    border: 1px solid rgba(40, 167, 69, 0.3);
-}
-
-.message-error {
-    background-color: rgba(220, 53, 69, 0.2);
-    color: #dc3545;
-    border: 1px solid rgba(220, 53, 69, 0.3);
-}
-
-.profile-container {
-    max-width: 450px;
-    margin: 50px auto;
-    
-    background: var(--color-medium-bg); 
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px var(--color-shadow); 
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    color: var(--color-text-light);
-    
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.profile-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 35px var(--color-shadow);
-}
-
-.profile-container h2 {
-    color: var(--color-accent);
-    margin-bottom: 30px;
-    font-weight: 700;
-}
-</style>
 
 </body>
 </html>

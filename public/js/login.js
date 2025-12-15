@@ -83,8 +83,32 @@ function handleForgotEmail(email) {
     })
 }
 
-function showMessage(message, type) {
+// function showMessage(message, type) {
 
+//     const existingMessage = document.querySelector('.message');
+//     if (existingMessage) {
+//         existingMessage.remove();
+//     }
+    
+//     const messageDiv = document.createElement('div');
+//     messageDiv.className = `message message-${type}`;
+//     messageDiv.textContent = message;
+    
+//     const form = document.getElementById('signup-form');
+//     if (form) {
+//         form.insertBefore(messageDiv, form.firstChild);
+//     } else {
+//         document.body.insertBefore(messageDiv, document.body.firstChild);
+//     }
+    
+//     setTimeout(() => {
+//         if (messageDiv.parentNode) {
+//             messageDiv.remove();
+//         }
+//     }, 5000);
+// }
+
+function showMessage(message, type) {
     const existingMessage = document.querySelector('.message');
     if (existingMessage) {
         existingMessage.remove();
@@ -94,16 +118,45 @@ function showMessage(message, type) {
     messageDiv.className = `message message-${type}`;
     messageDiv.textContent = message;
     
-    const form = document.getElementById('signup-form');
-    if (form) {
-        form.insertBefore(messageDiv, form.firstChild);
-    } else {
-        document.body.insertBefore(messageDiv, document.body.firstChild);
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        font-weight: 500;
+        max-width: 90vw;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    `;
+    
+    if (type === 'success') {
+        messageDiv.style.backgroundColor = '#10b981';
+        messageDiv.style.color = 'white';
+    } else if (type === 'error') {
+        messageDiv.style.backgroundColor = '#ef4444';
+        messageDiv.style.color = 'white';
+    } else if (type === 'info') {
+        messageDiv.style.backgroundColor = '#3b82f6';
+        messageDiv.style.color = 'white';
     }
     
+    document.body.appendChild(messageDiv);
+    
     setTimeout(() => {
-        if (messageDiv.parentNode) {
-            messageDiv.remove();
-        }
+        messageDiv.style.opacity = '1';
+    }, 10);
+    
+    setTimeout(() => {
+        messageDiv.style.opacity = '0';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 300);
     }, 5000);
 }

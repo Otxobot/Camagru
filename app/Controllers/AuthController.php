@@ -516,6 +516,49 @@ class AuthController {
         }
     }
 
+    public function updatePassword() {
+        header('Content-Type: application/json');
+
+        try {
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($input['current_password']) || !isset($input['new_password'])) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+                return ;
+            }
+
+            if ($input['current_password'] === $input['new_password']) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'New password must be different from current password']);
+            }
+
+            //===============================================
+            //=ACUERDATE DE DESCOMENTAR ESTO!!!!!!!!!!!!!!!!=
+            //===============================================
+
+            // $complexityCheck = $this->isComplexPassword($input['new_password']);
+            // if ($complexityCheck !== true) {
+            //     http_response_code(400);
+            //     echo json_encode($complexityCheck);
+            //     return;
+            // }
+
+            $current_user = $this->userModel->findByEmail($input['email']);
+
+            if ($current_user) {
+                $passwordUpdated = $this->userModel->updatePassword($current_user['id'], password_hash($input['new_password'], PASSWORD_DEFAULT));
+                http_response_code(200);
+                echo json_encode(['success' => true, 'message' => 'Password updated!']);
+            }
+
+        } catch(Exception $e) {
+            error_log('Password update error: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Server error updating password']);
+        }
+    }
+
     public function updateEmail() {
         header('Content-Type: application/json');
 

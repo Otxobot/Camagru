@@ -155,7 +155,6 @@ async function handleEmailChange(e) {
         return;
     }
 
-    // Client-side email validation
     if (!validateEmail(newEmail)) {
         showMessage('Please enter a valid email address', 'error');
         return;

@@ -55,9 +55,9 @@ $router->get('/verify-email', 'AuthController@verifyEmail');
 $router->post('/forgot-password', 'AuthController@forgotPassword');
 $router->get('/reset-password', 'AuthController@resetPassword');
 $router->post('/reset-password', 'AuthController@resetPassword');
-$router->post('/api/profile/update-username', 'AuthController@updateUsername');
-$router->post('/api/profile/update-email', 'AuthController@updateEmail');
-$router->post('/api/profile/update-password', 'AuthController@updatePassword');
+$router->post('/api/profile/update-username', 'ProfileController@updateUsername');
+$router->post('/api/profile/update-email', 'ProfileController@updateEmail');
+$router->post('/api/profile/update-password', 'ProfileController@updatePassword');
 
 
 // API routes for authenticated users

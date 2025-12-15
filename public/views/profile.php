@@ -99,32 +99,6 @@ if (!isset($_SESSION['user_id'])) {
                 <button type="submit" class="btn w-100 btn-accent mb-3">Update email</button>
             </form>
         </div>
-        
-        <div class="profile-section">
-            <h4 class="section-title">My Statistics</h4>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-number" id="images-count">-</span>
-                    <span class="stat-label">Images Posted</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="likes-received">-</span>
-                    <span class="stat-label">Likes Received</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="comments-made">-</span>
-                    <span class="stat-label">Comments Made</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="profile-section danger-zone">
-            <h4 class="section-title text-danger">Danger Zone</h4>
-            <p class="text-muted small">These actions are permanent and cannot be undone.</p>
-            <button type="button" class="btn btn-outline-danger w-100" id="delete-account-btn">
-                Delete My Account
-            </button>
-        </div>
 
         <div id="formMessage" class="error-message"></div>
 </div>

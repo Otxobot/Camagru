@@ -1,0 +1,108 @@
+.gallery-container {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.gallery-card {
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-container {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .card-img-container img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.overlay-content {
+    padding: 1rem;
+}
+
+.comment {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.modal-img {
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+.comments-section {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .gallery-container {
+        padding-top: 80px;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-xl {
+        max-width: calc(100vw - 1rem);
+    }
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.page-link {
+    color: #00bcd4;
+}
+
+.page-link:hover {
+    color: #00acc1;
+    border-color: #00bcd4;
+}
+
+.page-item.active .page-link {
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+}

@@ -59,6 +59,12 @@ $router->post('/api/profile/update-username', 'ProfileController@updateUsername'
 $router->post('/api/profile/update-email', 'ProfileController@updateEmail');
 $router->post('/api/profile/update-password', 'ProfileController@updatePassword');
 
+$router->get('/gallery', 'GalleryController@index');
+$router->get('/api/gallery', 'GalleryController@getImages');
+$router->post('/api/gallery/like', 'GalleryController@toggleLike');
+$router->post('/api/gallery/comment', 'GalleryController@addComment');
+$router->post('/api/gallery/comment/delete', 'GalleryController@deleteComment');
+
 
 // API routes for authenticated users
 // $router->get('/dashboard', 'AuthController@dashboard');

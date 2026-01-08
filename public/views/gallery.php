@@ -109,5 +109,6 @@ if (session_status() === PHP_SESSION_NONE) {
     </script>
     <script src="/js/gallery.js"></script>
     <script src="/js/mobile-nav.js"></script>
+    <script src="/js/logout.js"></script>
 </body>
 </html>

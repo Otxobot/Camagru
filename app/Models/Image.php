@@ -44,7 +44,7 @@ class Image {
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findById($id) {
@@ -55,7 +55,7 @@ class Image {
             WHERE i.id = :id
         ");
         $stmt->execute([':id' => $id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function findByUserId($userId, $limit = 20, $offset = 0) {
@@ -78,7 +78,7 @@ class Image {
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function delete($id, $userId) {

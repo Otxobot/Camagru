@@ -1,0 +1,104 @@
+:root {
+    --color-dark-bg: #121212;
+    --color-medium-bg: #1e1e1e;
+    --color-text-light: #f0f0f0;
+    --color-accent: #00bcd4;
+    --color-shadow: rgba(0, 0, 0, 0.6);
+}
+
+.dashboard-container {
+    padding-top: 100px;
+    height: calc(100vh - 100px);
+}
+
+.sidebar {
+    background-color: var(--color-medium-bg);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.sidebar-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h5 {
+    color: var(--color-accent);
+    margin: 0;
+}
+
+.thumbnails-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+/* Will add to the js file probably when creating thumbnail items */
+.thumbnail-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.thumbnail-item:hover {
+    transform: scale(1.05);
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-overlay {
+    opacity: 1;
+}
+
+/* Now the main content, which is the editing area or section */
+
+.main-content {
+    padding: 1.5rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.camera-card, .stickers-card {
+    background-color: var(--color-medium-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}

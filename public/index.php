@@ -65,11 +65,10 @@ $router->post('/api/gallery/like', 'GalleryController@toggleLike');
 $router->post('/api/gallery/comment', 'GalleryController@addComment');
 $router->post('/api/gallery/comment/delete', 'GalleryController@deleteComment');
 
-
-// API routes for authenticated users
-// $router->get('/dashboard', 'AuthController@dashboard');
-// $router->post('/api/upload', 'ImageController@upload');
-// $router->get('/api/gallery', 'ImageController@gallery');
+$router->get('/dashboard', 'DashboardController@index');
+$router->get('/api/dashboard/photos', 'DashboardController@getPhotos');
+$router->post('/api/dashboard/save-photo', 'DashboardController@savePhoto');
+$router->delete('/api/dashboard/delete-photo', 'DashboardController@deletePhoto');
 
 // Handle the request
 try {

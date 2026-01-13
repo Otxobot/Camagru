@@ -148,7 +148,6 @@ async function openImageModal(imageId) {
         const image = data.images.find(img => img.id == imageId);
         if (!image) return;
         
-        // Populate modal
         document.getElementById('modalImage').src = image.file_path;
         document.getElementById('modalImage').alt = image.filename;
         document.getElementById('modalUsername').textContent = `@${image.username}`;
@@ -198,7 +197,6 @@ async function toggleLike(imageId) {
             likeBtn.innerHTML = `<i class="bi bi-heart${data.is_liked ? '-fill text-danger' : ''}"></i>`;
             likeCount.textContent = data.like_count;
             
-            // Refresh gallery to show updated counts
             loadGallery(currentPage);
         } else {
             showMessage(data.message, 'error');
@@ -229,7 +227,7 @@ async function handleCommentSubmit(e) {
         if (data.success) {
             renderComments(data.comments);
             document.getElementById('commentInput').value = '';
-            loadGallery(currentPage); // Refresh to update comment count
+            loadGallery(currentPage);
         } else {
             showMessage(data.message, 'error');
         }
@@ -278,9 +276,8 @@ async function deleteComment(commentId, imageId) {
         const data = await response.json();
         
         if (data.success) {
-            // Refresh comments by reopening modal
             openImageModal(imageId);
-            loadGallery(currentPage); // Refresh gallery
+            loadGallery(currentPage);
         } else {
             showMessage(data.message, 'error');
         }

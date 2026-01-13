@@ -88,12 +88,51 @@ if (!isset($_SESSION['user_id'])) {
                                 </div>
                             </div>
 
+                            <div class="card stickers-card">
+                                <div class="card-body">
+                                    <h6>Choose a sticker:</h6>
+                                    <div class="stickers-grid" id="stickers-container">
+                                        <!-- Stickers will be loaded here -->
+                                    </div>
+                                    <div class="selected-sticker mt-3">
+                                        <small class="text-muted">Selected: <span id="selected-sticker-name">None</span></small>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        
+
                     </div>
 
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this photo?</p>
+                    <img id="delete-preview" src="" alt="" class="img-fluid rounded">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php include __DIR__ . '/shared/footer.php'; ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/mobile-nav.js"></script>
+    <script src="/js/logout.js"></script>
+</body>
 </html>

@@ -1,5 +1,7 @@
+
+let currentPage = 1;
+
 document.addEventListener('DOMContentLoaded', function() {
-    let currentPage = 1;
     
     loadGallery(currentPage);
 
@@ -109,7 +111,6 @@ function generatePageNumbers(pagination) {
     const current = pagination.current_page;
     const total = pagination.total_pages;
     
-    // Show first page
     if (current > 3) {
         html += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1); return false;">1</a></li>`;
         if (current > 4) {
@@ -117,14 +118,12 @@ function generatePageNumbers(pagination) {
         }
     }
     
-    // Show pages around current
     for (let i = Math.max(1, current - 2); i <= Math.min(total, current + 2); i++) {
         html += `<li class="page-item ${i === current ? 'active' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
                 </li>`;
     }
     
-    // Show last page
     if (current < total - 2) {
         if (current < total - 3) {
             html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;

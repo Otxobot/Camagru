@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
 :root {
-    --color-dark-bg: #121212; /* Even darker for true dark mode */
-    --color-medium-bg: #1e1e1e; /* Consistent with Bootstrap's 'bg-dark' feel */
+    --color-dark-bg: #121212;
+    --color-medium-bg: #1e1e1e;
     --color-text-light: #f0f0f0;
-    --color-accent: #00bcd4; /* Vibrant Cyan/Teal */
+    --color-accent: #00bcd4;
     --color-shadow: rgba(0, 0, 0, 0.6);
-    --navbar-height: 56px; /* Default Bootstrap navbar height */
+    --navbar-height: 56px;
 }
 
 body {
@@ -15,14 +15,14 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: var(--color-dark-bg); /* Dark background */
-    color: var(--color-text-light); /* Light text color */
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-light);
 
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 
-    padding-top: calc(var(--navbar-height) + 1.5rem); /* Height of header + some space */
+    padding-top: calc(var(--navbar-height) + 1.5rem);
     transition: background-color 0.4s ease;
 }
 
@@ -37,14 +37,14 @@ body {
 }
 
 .navbar-nav .nav-link {
-    color: var(--color-text-light); /* Default link color */
+    color: var(--color-text-light);
     transition: all 0.3s ease;
-    border-bottom: 2px solid transparent; /* Prepare for hover effect */
+    border-bottom: 2px solid transparent;
 }
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    color: var(--color-accent) !important; /* Accent color on hover/active */
+    color: var(--color-accent) !important;
     border-bottom: 2px solid var(--color-accent);
 }
 
@@ -61,7 +61,6 @@ body {
 
 .welcome-container h2 {
     color: var(--color-accent);
-    /* Ensure other text inside the container is visible against the dark card */
     margin-bottom: 1rem;
 }
 
@@ -70,36 +69,36 @@ body {
     box-shadow: 0 8px 30px var(--color-shadow);
 }
 
-/* Typography */
+
 h1, h2, h3 {
     text-align: center;
-    color: var(--color-accent); /* Use accent color for headings */
+    color: var(--color-accent);
     margin-bottom: 30px;
     font-weight: 700;
 }
 
 p {
-    color: #b0b0b0; /* Slightly muted text for paragraphs */
+    color: #b0b0b0;
 }
 
 /* Header Styles */
 .main-header {
     top: 0;
     position: fixed;
-    background-color: var(--color-medium-bg); /* Dark header background */
-    box-shadow: 0 2px 10px var(--color-shadow); /* Dark shadow */
-    padding: 0.8rem 2rem; /* Slightly reduced vertical padding */
+    background-color: var(--color-medium-bg);
+    box-shadow: 0 2px 10px var(--color-shadow);
+    padding: 0.8rem 2rem;
     left: 0;
     right: 0;
     z-index: 1000;
     height: 2.5rem;
-    display: flex; /* Ensure flex for centering inner content */
+    display: flex;
     align-items: center;
 }
 
 .nav-container {
     max-width: 1200px;
-    width: 100%; /* Important for centering with flex */
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -107,10 +106,10 @@ p {
 }
 
 .logo a {
-    font-size: 1.8rem; /* Slightly larger logo */
+    font-size: 1.8rem;
     font-weight: 700;
     text-decoration: none;
-    color: var(--color-accent); /* Accent color for the logo */
+    color: var(--color-accent);
     letter-spacing: 1px;
 }
 
@@ -118,13 +117,12 @@ p {
     text-decoration: none;
     color: var(--color-text-light);
     font-weight: 500;
-    transition: color 0.3s ease, border-bottom 0.3s ease; /* Smooth transition */
-    padding-bottom: 5px; /* Space for the underline effect */
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    padding-bottom: 5px;
 }
 
 .nav-links a:hover {
     color: var(--color-accent);
-    /* Modern Underline effect */
     border-bottom: 2px solid var(--color-accent); 
 }
 
@@ -132,7 +130,6 @@ p {
     color: #4CAF50;
 }
 
-/* Footer (Using Bootstrap classes is often easier, but we keep your structure) */
 .main-footer {
     background-color: var(--color-medium-bg);
     color: var(--color-text-light);
@@ -152,7 +149,7 @@ p {
 .footer-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem; /* Add horizontal padding for smaller screens */
+    padding: 0 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -167,7 +164,7 @@ main {
     padding: 1rem;
 }
 
-/* Responsive Design */
+
 /* @media screen and (max-width: 768px) {
     body {
         padding: 5px;

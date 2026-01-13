@@ -36,7 +36,7 @@ class Comment {
             ORDER BY c.created_at ASC
         ");
         $stmt->execute([':image_id' => $imageId]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function delete($id, $userId) {

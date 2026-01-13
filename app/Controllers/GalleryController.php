@@ -32,7 +32,7 @@ class GalleryController {
         
         try {
             $page = $_GET['page'] ?? 1;
-            $limit = 12;
+            $limit = 5;
             $offset = ($page - 1) * $limit;
 
             $images = $this->imageModel->findAll($limit, $offset);

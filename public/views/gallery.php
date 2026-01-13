@@ -32,11 +32,11 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
 
                     <div id="gallery-grid" class="row g-3">
-                        <!-- Images will be loaded here via JavaScript -->
+                        <!-- Las fotos se cargan aqui con gallery.js -->
                     </div>
 
                     <div id="pagination-container" class="d-flex justify-content-center mt-4">
-                        <!-- Pagination will be loaded here via JavaScript -->
+                        <!-- La paginación se carga aqui con gallery.js -->
                     </div>
 
                     <div id="no-images" class="text-center py-5 d-none">
@@ -48,7 +48,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
 
-        <!-- Image Modal -->
         <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">

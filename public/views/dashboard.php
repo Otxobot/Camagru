@@ -42,6 +42,7 @@ if (!isset($_SESSION['user_id'])) {
                         <p class="text-muted mt-2">No photos yet</p>
                         <p class="small text-muted">Take your first photo!</p>
                     </div>
+                </div>
 
                     <div class="col-lg-9 col-md-8 main-content">
                         <div class="content-wrapper">
@@ -104,7 +105,6 @@ if (!isset($_SESSION['user_id'])) {
 
                     </div>
 
-                </div>
             </div>
         </div>
     </main>

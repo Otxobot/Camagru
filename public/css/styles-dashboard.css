@@ -7,7 +7,6 @@
 }
 
 .dashboard-container {
-    padding-top: 100px;
     height: calc(100vh - 100px);
 }
 
@@ -182,6 +181,10 @@
 
 .btn-close {
     filter: invert(1);
+}
+
+.text-muted {
+    color: #adb5bd !important;
 }
 
 @media (max-width: 768px) {

@@ -3,7 +3,6 @@ let selectedSticker = null;
 let capturedImage = null;
 let userPhotos = [];
 
-// Available stickers - you can add more
 const availableStickers = [
     { id: 1, name: 'Sunglasses', file: 'sunglasses.png' },
     { id: 2, name: 'Mustache', file: 'mustache.png' },
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeDashboard() {
-    // Check camera support
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         showMessage('Camera not supported in this browser', 'error');
         document.getElementById('start-camera-btn').disabled = true;

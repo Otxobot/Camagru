@@ -66,7 +66,7 @@ class DashboardController {
                 return;
             }
 
-            $uploadDir = __DIR__ . '/../../uploads/';
+            $uploadDir = __DIR__ . '/../../public/uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -130,7 +130,7 @@ class DashboardController {
             
             if ($deleted) {
                 // Delete file from filesystem
-                $filepath = __DIR__ . '/../../uploads/' . $photo['filename'];
+                $filepath = __DIR__ . '/../../public/uploads/' . $photo['filename'];
                 if (file_exists($filepath)) {
                     unlink($filepath);
                 }

@@ -27,45 +27,46 @@ function initializeDashboard() {
 }
 
 function setupEventListeners() {
-    // Camera controls
     document.getElementById('start-camera-btn').addEventListener('click', startCamera);
     document.getElementById('stop-camera-btn').addEventListener('click', stopCamera);
     document.getElementById('capture-btn').addEventListener('click', capturePhoto);
     document.getElementById('reset-btn').addEventListener('click', resetCamera);
     
-    // File upload
     document.getElementById('image-upload').addEventListener('change', handleImageUpload);
     
-    // Delete confirmation
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
 }
 
 async function startCamera() {
     try {
-        camera = await navigator.mediaDevices.getUserMedia({ 
-            video: { 
+        camera = await navigator.mediaDevices.getUserMedia({
+            video: {
                 width: { ideal: 640 }, 
                 height: { ideal: 480 } 
-            } 
+            }
         });
+        // console.log("what is camera", camera);
         
         const video = document.getElementById('camera-preview');
         video.srcObject = camera;
-        
-        video.onloadedmetadata = () => {
-            document.getElementById('camera-placeholder').classList.add('d-none');
-            video.classList.remove('d-none');
-            
-            document.getElementById('start-camera-btn').classList.add('d-none');
-            document.getElementById('stop-camera-btn').classList.remove('d-none');
-            
-            updateCaptureButton();
-        };
+
+        video.addEventListener('loadedmetadata', handleVideo(video));
         
     } catch (error) {
         console.error('Error accessing camera:', error);
         showMessage('Unable to access camera. Please check permissions.', 'error');
     }
+}
+
+function handleVideo(video) {
+    
+    document.getElementById('camera-placeholder').classList.add('d-none');
+    video.classList.remove('d-none');
+    
+    document.getElementById('start-camera-btn').classList.add('d-none');
+    document.getElementById('stop-camera-btn').classList.remove('d-none');
+    
+    updateCaptureButton();
 }
 
 function stopCamera() {
@@ -93,20 +94,16 @@ function capturePhoto() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    // Draw video frame to canvas
     ctx.drawImage(video, 0, 0);
     
-    // If sticker is selected, add it to the image
     if (selectedSticker) {
         addStickerToCanvas(ctx, canvas);
     }
     
-    // Convert to blob and save
     canvas.toBlob(async (blob) => {
         await savePhoto(blob);
     }, 'image/jpeg', 0.8);
     
-    // Show captured image
     video.classList.add('d-none');
     canvas.classList.remove('d-none');
     document.getElementById('capture-btn').classList.add('d-none');

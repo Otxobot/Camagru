@@ -77,7 +77,6 @@ if (!isset($_SESSION['user_id'])) {
                                         </div>
                                     </div>
 
-                                    <!-- File upload alternative -->
                                     <div class="upload-section">
                                         <hr class="my-4">
                                         <h6>Or upload an image:</h6>
@@ -93,7 +92,7 @@ if (!isset($_SESSION['user_id'])) {
                                 <div class="card-body">
                                     <h6>Choose a sticker:</h6>
                                     <div class="stickers-grid" id="stickers-container">
-                                        <!-- Stickers will be loaded here -->
+                                        
                                     </div>
                                     <div class="selected-sticker mt-3">
                                         <small class="text-muted">Selected: <span id="selected-sticker-name">None</span></small>

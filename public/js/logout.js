@@ -19,8 +19,10 @@ async function handleLogout(event) {
 
         if (response.ok) {
             // Success! Redirect to the homepage
-            showMessage("Logged out succesfully");
-            window.location.href = '/';
+            showMessage("Logged out succesfully", "info");
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
         } else {
             alert(result.error || 'Logout failed.');
             showMessage(result.error || 'Logout failed', 'error');
@@ -50,7 +52,7 @@ function showMessage(message, type) {
         z-index: 9999;
         padding: 12px 24px;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgba(59, 74, 240, 0.15);
         font-weight: 500;
         max-width: 90vw;
         text-align: center;

@@ -43,8 +43,9 @@ async function handleLogin(event) {
 
         if (response.ok) {
             showMessage('Logged in successfully!', 'success');
-            event.target.reset(); // Clear form
-            window.location.href = '/';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
         } else {
             showMessage(result.error || 'Login failed', 'error');
         }
@@ -82,31 +83,6 @@ function handleForgotEmail(email) {
         alert('An error ocurred. Please try again.');
     })
 }
-
-// function showMessage(message, type) {
-
-//     const existingMessage = document.querySelector('.message');
-//     if (existingMessage) {
-//         existingMessage.remove();
-//     }
-    
-//     const messageDiv = document.createElement('div');
-//     messageDiv.className = `message message-${type}`;
-//     messageDiv.textContent = message;
-    
-//     const form = document.getElementById('signup-form');
-//     if (form) {
-//         form.insertBefore(messageDiv, form.firstChild);
-//     } else {
-//         document.body.insertBefore(messageDiv, document.body.firstChild);
-//     }
-    
-//     setTimeout(() => {
-//         if (messageDiv.parentNode) {
-//             messageDiv.remove();
-//         }
-//     }, 5000);
-// }
 
 function showMessage(message, type) {
     const existingMessage = document.querySelector('.message');

@@ -6,11 +6,13 @@ use App\Core\Database;
 use App\Models\Image;
 use App\Models\Like;
 use App\Models\Comment;
+use App\Services\EmailService;
 
 class GalleryController {
     private $imageModel;
     private $likeModel;
     private $commentModel;
+    private $emailService;
 
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -21,6 +23,7 @@ class GalleryController {
         $this->imageModel = new Image($pdo);
         $this->likeModel = new Like($pdo);
         $this->commentModel = new Comment($pdo);
+        $this->emailService = new EmailService($pdo);
     }
 
     public function index() {
@@ -153,6 +156,11 @@ class GalleryController {
                 'user_id' => $_SESSION['user_id'],
                 'image_id' => $imageId,
                 'content' => $content
+            ]);
+
+            $this->emailService->sendImageOwnerEmail([
+                'image_id' => $imageId,
+                'comment_content' => $content,
             ]);
 
             $comments = $this->commentModel->findByImageId($imageId);

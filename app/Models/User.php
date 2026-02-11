@@ -23,6 +23,12 @@ class User {
         return $stmt->fetch();
     }
 
+    public function findById($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function create($data) {
         $stmt = $this->pdo->prepare("
             INSERT INTO users (username, email, password_hash, confirmation_token)
@@ -149,5 +155,30 @@ class User {
         $isConfirmed = $confirmationToken ? 0 : 1;
         
         return $stmt->execute([$newEmail, $confirmationToken, $isConfirmed, $userId]);
+    }
+
+    public function updateNotificationPreferences($userId, $notifyOnComment) {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO preferences (user_id, notify_on_comment) 
+            VALUES (:user_id, :notify_on_comment)
+            ON CONFLICT (user_id) 
+            DO UPDATE SET notify_on_comment = :notify_on_comment
+        ");
+        return $stmt->execute([
+            ':user_id' => $userId,
+            ':notify_on_comment' => $notifyOnComment ? 1 : 0
+        ]);
+    }
+
+    public function getNotificationPreferences($userId) {
+        $stmt = $this->pdo->prepare("
+            SELECT notify_on_comment FROM preferences 
+            WHERE user_id = :user_id
+        ");
+        $stmt->execute([':user_id' => $userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Return defaults if no preferences exist
+        return $result ?: ['notify_on_comment' => true];
     }
 }

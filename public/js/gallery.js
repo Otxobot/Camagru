@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadGallery(currentPage);
 
-    // Event listeners
     const commentForm = document.getElementById('commentForm');
     if (commentForm) {
         commentForm.addEventListener('submit', handleCommentSubmit);

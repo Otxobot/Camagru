@@ -22,6 +22,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # RUN  chmod 644 /etc/msmtprc && chown www-data:www-data /etc/msmtprc
 RUN  touch /var/log/msmtp.log && chmod 666 /var/log/msmtp.log
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+COPY docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 
 # Create www-data user and set proper ownership

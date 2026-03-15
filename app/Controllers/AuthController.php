@@ -10,8 +10,9 @@ class AuthController {
     private $emailService;
 
     public function __construct() {
-        $this->userModel = new User(Database::getInstance());
-        $this->emailService = new EmailService();
+        $pdo = Database::getInstance();
+        $this->userModel = new User($pdo);
+        $this->emailService = new EmailService($pdo);
     }
 
     public function signup() {

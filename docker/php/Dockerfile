@@ -31,4 +31,4 @@ RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 WORKDIR /var/www/html
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["php-fpm"]
+CMD ["php-fpm", "-F"]

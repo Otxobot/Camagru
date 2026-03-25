@@ -96,8 +96,6 @@ async function handlePasswordChange(e) {
 
     const passwordForm = document.getElementById('password-form');
 
-    console.log(newPassword, confirmPassword);
-
     if (newPassword !== confirmPassword) {
         showMessage('New passwords do not match', 'error');
         return;

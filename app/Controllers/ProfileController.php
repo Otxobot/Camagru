@@ -71,6 +71,13 @@ class ProfileController {
         header('Content-Type: application/json');
 
         try {
+            session_start();
+            if (!isset($_SESSION['user_id'])) {
+                http_response_code(401);
+                echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+                return;
+            }
+
             $input = json_decode(file_get_contents('php://input'), true);
 
             if (!isset($input['current_password']) || !isset($input['new_password'])) {
@@ -82,6 +89,20 @@ class ProfileController {
             if ($input['current_password'] === $input['new_password']) {
                 http_response_code(400);
                 echo json_encode(['success' => false, 'message' => 'New password must be different from current password']);
+                return;
+            }
+
+            $current_user = $this->userModel->findById($_SESSION['user_id']);
+            if (!$current_user) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'User not found']);
+                return;
+            }
+
+            if (!password_verify($input['current_password'], $current_user['password_hash'])) {
+                http_response_code(401);
+                echo json_encode(['success' => false, 'message' => 'Current password is incorrect']);
+                return;
             }
 
             //===============================================

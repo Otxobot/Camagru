@@ -87,8 +87,6 @@ class EmailService {
     }
 
     public function sendResetPasswordEmail($email, $username, $resetToken) {
-        error_log("=== sendResetPasswordEmail CALLED ===");
-        error_log("Email: $email, Username: $username");
         
         $resetLink = "http://localhost:8080/reset-password?token=" . $resetToken;
         
@@ -103,9 +101,7 @@ class EmailService {
             'X-Mailer: PHP/' . phpversion()
         ];
 
-        error_log("About to call mail() function");
         $success = mail($email, $subject, $message, implode("\r\n", $headers));
-        error_log("mail() function returned: " . ($success ? 'true' : 'false'));
         
         if (!$success) {
             $lastError = error_get_last();
@@ -114,8 +110,7 @@ class EmailService {
         } else {
             error_log("Password reset email sent successfully");
         }
-        
-        error_log("=== sendResetPasswordEmail FINISHED ===");
+    
         return $success;
     }
 

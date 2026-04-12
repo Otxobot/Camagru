@@ -35,14 +35,16 @@ services:
       - camagru_net
 
   db:
-    build:
-      context: .
-      dockerfile: ./docker/postgresql/Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: ./docker/postgresql/Dockerfile
+    image: postgres:15-alpine
     restart: always
     env_file:
       - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql 
     networks:
       - camagru_net
     ports: 

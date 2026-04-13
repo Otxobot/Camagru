@@ -74,6 +74,9 @@ if (!isset($_SESSION['user_id'])) {
                                             <button id="reset-btn" class="btn btn-warning d-none">
                                                 <i class="bi bi-arrow-clockwise"></i> Reset
                                             </button>
+                                            <div id="sticker-reminder" class="sticker-reminder mt-2">
+                                                Choose a sticker first
+                                            </div>
                                         </div>
                                     </div>
 
@@ -130,7 +133,7 @@ if (!isset($_SESSION['user_id'])) {
     <?php include __DIR__ . '/shared/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/dashboard.js"></script>
+    <script src="/js/dashboard.js?v=<?php echo filemtime(__DIR__ . '/../js/dashboard.js'); ?>"></script>
     <script src="/js/mobile-nav.js"></script>
     <script src="/js/logout.js"></script>
 </body>

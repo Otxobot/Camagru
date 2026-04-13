@@ -91,6 +91,21 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.camera-card .card-body,
+.stickers-card .card-body {
+    color: var(--color-text-light);
+}
+
+.camera-card h6,
+.stickers-card h6 {
+    color: var(--color-text-light);
+}
+
+.camera-card small,
+.stickers-card small {
+    color: rgba(240, 240, 240, 0.85) !important;
+}
+
 .camera-container {
     position: relative;
     width: 100%;
@@ -120,6 +135,12 @@
 
 .camera-controls {
     text-align: center;
+}
+
+.sticker-reminder {
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .upload-area {

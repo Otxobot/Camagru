@@ -2,7 +2,8 @@ FROM php:8.2-fpm
 
 # Install PostgreSQL driver, GD for image manipulation
 RUN apt-get update && apt-get install -y \
-    libpq-dev libpng-dev zip unzip msmtp gettext-base \
+    libpq-dev libpng-dev libjpeg62-turbo-dev zip unzip msmtp gettext-base \
+    && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install pdo pdo_pgsql gd
 
 # Install Xdebug and set up logging

@@ -45,7 +45,6 @@ async function startCamera() {
                 height: { ideal: 480 } 
             }
         });
-        // console.log("what is camera", camera);
         
         const video = document.getElementById('camera-preview');
         video.srcObject = camera;
@@ -96,13 +95,9 @@ function capturePhoto() {
     
     ctx.drawImage(video, 0, 0);
     
-    if (selectedSticker) {
-        addStickerToCanvas(ctx, canvas);
-    }
-    
     canvas.toBlob(async (blob) => {
         await savePhoto(blob);
-    }, 'image/jpeg', 0.8);
+    }, 'image/png');
     
     video.classList.add('d-none');
     canvas.classList.remove('d-none');
@@ -125,7 +120,6 @@ function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
     
-    // Validate file
     if (!file.type.startsWith('image/')) {
         showMessage('Please select a valid image file', 'error');
         return;
@@ -136,7 +130,6 @@ function handleImageUpload(event) {
         return;
     }
     
-    // Process uploaded image
     const reader = new FileReader();
     reader.onload = (e) => {
         processUploadedImage(e.target.result);
@@ -150,26 +143,17 @@ function processUploadedImage(imageSrc) {
     const img = new Image();
     
     img.onload = () => {
-        // Resize if needed
         let { width, height } = calculateImageSize(img.width, img.height, 640, 480);
         
         canvas.width = width;
         canvas.height = height;
         
-        // Draw image
         ctx.drawImage(img, 0, 0, width, height);
         
-        // Add sticker if selected
-        if (selectedSticker) {
-            addStickerToCanvas(ctx, canvas);
-        }
-        
-        // Convert to blob and save
         canvas.toBlob(async (blob) => {
             await savePhoto(blob);
-        }, 'image/jpeg', 0.8);
+        }, 'image/png');
         
-        // Show result
         document.getElementById('camera-placeholder').classList.add('d-none');
         document.getElementById('camera-preview').classList.add('d-none');
         canvas.classList.remove('d-none');
@@ -217,7 +201,7 @@ async function savePhoto(blob) {
     }
     
     const formData = new FormData();
-    formData.append('image', blob, 'photo.jpg');
+    formData.append('image', blob, 'photo.png');
     formData.append('sticker_id', selectedSticker.id);
     
     try {
@@ -271,21 +255,34 @@ function selectSticker(sticker, element) {
     selectedSticker = sticker;
     
     document.getElementById('selected-sticker-name').textContent = sticker.name;
+    const stickerReminder = document.getElementById('sticker-reminder');
+    if (stickerReminder) {
+        stickerReminder.classList.add('d-none');
+    }
     updateCaptureButton();
 }
 
 function updateCaptureButton() {
     const captureBtn = document.getElementById('capture-btn');
     const video = document.getElementById('camera-preview');
-    
-    if (camera && !video.classList.contains('d-none') && selectedSticker) {
+
+    const hasSelectedSticker = Boolean(selectedSticker);
+    const cameraReady = Boolean(camera) && !video.classList.contains('d-none');
+
+    if (hasSelectedSticker && cameraReady) {
         captureBtn.disabled = false;
         captureBtn.classList.remove('d-none');
+        captureBtn.removeAttribute('title');
+        return;
+    }
+
+    captureBtn.disabled = true;
+    captureBtn.classList.add('d-none');
+
+    if (!hasSelectedSticker) {
+        captureBtn.title = 'Please select a sticker first';
     } else {
-        captureBtn.disabled = true;
-        if (!selectedSticker) {
-            captureBtn.title = 'Please select a sticker first';
-        }
+        captureBtn.removeAttribute('title');
     }
 }
 

@@ -7,9 +7,12 @@ use App\Services\EmailService;
 
 class ProfileController {
     private $userModel;
+    private $emailService;
 
     public function __construct() {
-        $this->userModel = new User(Database::getInstance());
+        $pdo = Database::getInstance();
+        $this->userModel = new User($pdo);
+        $this->emailService = new EmailService($pdo);
     }
 
     public function updateUsername() {
@@ -60,7 +63,7 @@ class ProfileController {
                 echo json_encode(['success' => false, 'message' => 'Failed to update username']);
             }
 
-        } catch(Exception $e) {
+        } catch (\Exception $e) {
             error_log('Username update error: ' . $e->getMessage());
             http_response_code(500);
             echo json_encode(['error' => 'Server error updating username']);
@@ -116,15 +119,20 @@ class ProfileController {
             //     return;
             // }
 
-            $current_user = $this->userModel->findByEmail($input['email']);
+            $passwordUpdated = $this->userModel->updatePassword(
+                $current_user['id'],
+                password_hash($input['new_password'], PASSWORD_DEFAULT)
+            );
 
-            if ($current_user) {
-                $passwordUpdated = $this->userModel->updatePassword($current_user['id'], password_hash($input['new_password'], PASSWORD_DEFAULT));
+            if ($passwordUpdated) {
                 http_response_code(200);
                 echo json_encode(['success' => true, 'message' => 'Password updated!']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Failed to update password']);
             }
 
-        } catch(Exception $e) {
+        } catch (\Exception $e) {
             error_log('Password update error: ' . $e->getMessage());
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Server error updating password']);
@@ -203,7 +211,7 @@ class ProfileController {
                         echo json_encode(['success' => false, 'message' => 'Failed to update email']);
                     }
 
-        } catch(Exception $e) {
+        } catch (\Exception $e) {
             error_log('Email update error: ' . $e->getMessage());
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Server error updating email']);

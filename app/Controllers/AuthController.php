@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Database;
 use App\Models\User;
 use App\Services\EmailService;
+use Exception;
 
 class AuthController {
     private $userModel;

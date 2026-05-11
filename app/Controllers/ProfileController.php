@@ -18,6 +18,10 @@ class ProfileController {
     public function updateUsername() {
         header('Content-type: application/json');
 
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
 
@@ -51,8 +55,6 @@ class ProfileController {
             $updateResult = $this->userModel->updateUsername($current_user['id'], $input['new_username']);
             
             if ($updateResult) {
-                
-                session_start();
                 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $current_user['id']) {
                     $_SESSION['username'] = $input['new_username'];
                 }
@@ -73,8 +75,11 @@ class ProfileController {
     public function updatePassword() {
         header('Content-Type: application/json');
 
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
-            session_start();
             if (!isset($_SESSION['user_id'])) {
                 http_response_code(401);
                 echo json_encode(['success' => false, 'message' => 'Not authenticated']);
@@ -142,6 +147,10 @@ class ProfileController {
     public function updateEmail() {
         header('Content-Type: application/json');
 
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
 
@@ -181,7 +190,7 @@ class ProfileController {
                     $confirmationToken = bin2hex(random_bytes(32));
 
                     $updateResult = $this->userModel->updateEmail($current_user['id'], $input['new_email'], $confirmationToken);
-                    
+
                     if ($updateResult) {
 
                         $emailSent = $this->emailService->sendVerificationEmail(
@@ -190,7 +199,6 @@ class ProfileController {
                             $confirmationToken
                         );
 
-                        session_start();
                         if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $current_user['id']) {
                             $_SESSION['email'] = $input['new_email'];
                         }

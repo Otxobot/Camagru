@@ -15,10 +15,6 @@ class GalleryController {
     private $emailService;
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $pdo = Database::getInstance();
         $this->imageModel = new Image($pdo);
         $this->likeModel = new Like($pdo);
@@ -78,7 +74,11 @@ class GalleryController {
 
     public function toggleLike() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Please log in to like images']);
@@ -121,7 +121,11 @@ class GalleryController {
 
     public function addComment() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Please log in to comment']);
@@ -182,7 +186,11 @@ class GalleryController {
 
     public function deleteComment() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Please log in']);

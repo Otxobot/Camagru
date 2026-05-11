@@ -1,3 +1,7 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const passwordForm = document.getElementById('password-form');
     const usernameForm = document.getElementById('username-form');
@@ -50,8 +54,9 @@ async function handleUsernameChange(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 current_username: currentUsername,
                 new_username: newUsername 
             })
@@ -111,6 +116,7 @@ async function handlePasswordChange(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
             },
             body: JSON.stringify({
                 current_password: currentPassword,
@@ -135,8 +141,6 @@ async function handlePasswordChange(e) {
 
 async function handleEmailChange(e) {
     e.preventDefault();
-
-    console.log("event", e);
 
     const newEmailInput = document.getElementById('new_email');
     const newEmail = newEmailInput.value.trim();
@@ -163,8 +167,9 @@ async function handleEmailChange(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 current_email: currentEmail,
                 new_email: newEmail 
             })
@@ -229,6 +234,7 @@ function handleAccountDeletion() {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken()
                 }
             });
 

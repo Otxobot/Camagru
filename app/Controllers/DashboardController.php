@@ -19,10 +19,6 @@ class DashboardController {
     ];
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(['error' => 'Authentication required']);
@@ -61,7 +57,11 @@ class DashboardController {
 
     public function savePhoto() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             if (!isset($_FILES['image'])) {
                 http_response_code(400);
@@ -259,7 +259,11 @@ class DashboardController {
 
     public function deletePhoto() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
             $photoId = $input['photo_id'] ?? null;

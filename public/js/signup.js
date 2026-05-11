@@ -1,3 +1,6 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signup-form');
@@ -45,6 +48,7 @@ async function handleSignup(event) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
             },
             body: JSON.stringify(signupData)
         });

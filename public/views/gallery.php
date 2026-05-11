@@ -15,6 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles-home.css">
     <link rel="stylesheet" href="../css/styles-gallery.css">
+    <meta name="csrf-token" content="<?= htmlspecialchars(\App\Core\Csrf::getToken(), ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body>
     <?php include __DIR__ . '/shared/header.php'; ?>

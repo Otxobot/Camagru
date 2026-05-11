@@ -1,3 +1,6 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const logoutForm = document.getElementById('logout-form');
@@ -13,6 +16,7 @@ async function handleLogout(event) {
     try {
         const response = await fetch('/api/logout', {
             method: 'POST',
+            headers: { 'X-CSRF-Token': getCsrfToken() }
         });
 
         const result = await response.json();

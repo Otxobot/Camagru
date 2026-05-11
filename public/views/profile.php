@@ -20,6 +20,7 @@ if (!isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="../css/styles-home.css">
   <link rel="stylesheet" href="../css/styles-signup.css">
   <link rel="stylesheet" href="../css/styles-profile.css">
+  <meta name="csrf-token" content="<?= htmlspecialchars(\App\Core\Csrf::getToken(), ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body>
 <?php include __DIR__ . '/shared/header.php'; ?>

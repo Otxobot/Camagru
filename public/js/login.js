@@ -1,3 +1,6 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
@@ -35,6 +38,7 @@ async function handleLogin(event) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
             },
             body: JSON.stringify(loginData)
         });
@@ -66,7 +70,8 @@ function handleForgotEmail(email) {
     fetch('/forgot-password', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': getCsrfToken()
         },
         body: JSON.stringify({email: email})
     })

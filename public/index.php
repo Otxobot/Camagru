@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../app/config/config.php';
 require_once __DIR__ . '/../app/Core/Router.php';
 
-// Autoload classes
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
     $base_dir = __DIR__ . '/../app/';
@@ -24,6 +23,11 @@ spl_autoload_register(function ($class) {
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+\App\Core\Csrf::generateToken();
 
 $router = new Router();
 

@@ -1,3 +1,7 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
+
 let camera = null;
 let selectedSticker = null;
 let capturedImage = null;
@@ -207,6 +211,7 @@ async function savePhoto(blob) {
     try {
         const response = await fetch('/api/dashboard/save-photo', {
             method: 'POST',
+            headers: { 'X-CSRF-Token': getCsrfToken() },
             body: formData
         });
         
@@ -345,7 +350,7 @@ async function confirmDelete() {
     try {
         const response = await fetch('/api/dashboard/delete-photo', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': getCsrfToken() },
             body: JSON.stringify({ photo_id: photoId })
         });
         

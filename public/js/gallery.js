@@ -1,3 +1,6 @@
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+}
 
 let currentPage = 1;
 
@@ -183,7 +186,7 @@ async function toggleLike(imageId) {
     try {
         const response = await fetch('/api/gallery/like', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': getCsrfToken() },
             body: JSON.stringify({ image_id: imageId })
         });
 
@@ -217,7 +220,7 @@ async function handleCommentSubmit(e) {
     try {
         const response = await fetch('/api/gallery/comment', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': getCsrfToken() },
             body: JSON.stringify({ image_id: imageId, content: content })
         });
 
@@ -268,7 +271,7 @@ async function deleteComment(commentId, imageId) {
     try {
         const response = await fetch('/api/gallery/comment/delete', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': getCsrfToken() },
             body: JSON.stringify({ comment_id: commentId })
         });
 

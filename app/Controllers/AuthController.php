@@ -17,7 +17,11 @@ class AuthController {
 
     public function signup() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
             
@@ -170,6 +174,10 @@ class AuthController {
     public function forgotPassword() {
         header('Content-type: application/json');
 
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
         
@@ -227,6 +235,11 @@ class AuthController {
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                if (!\App\Core\Csrf::validate()) {
+                    $this->renderResetPasswordResult(false, 'Security validation failed. Please try again.');
+                    return;
+                }
 
                 $token = $_POST['reset_token'] ?? '';
 
@@ -306,6 +319,7 @@ class AuthController {
                                         <input type='password' class='form-control' id='confirm_password' name='confirm_password' required>
                                     </div>
                                     <input type='hidden' name='reset_token' value='{$token}'>
+                                    <input type='hidden' name='csrf_token' value='" . htmlspecialchars(\App\Core\Csrf::getToken(), ENT_QUOTES, 'UTF-8') . "'>
                                     <div class='d-grid'>
                                         <button type='submit' class='btn btn-primary'>Reset Password</button>
                                     </div>
@@ -359,7 +373,11 @@ class AuthController {
 
     public function login() {
         header('Content-Type: application/json');
-        
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
         try {
             $input = json_decode(file_get_contents('php://input'), true);
             
@@ -379,8 +397,8 @@ class AuthController {
                     return ;
                 }
 
-                // Start session
-                session_start();
+                // Prevent session fixation — regenerate ID after successful login
+                session_regenerate_id(true);
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
@@ -406,14 +424,14 @@ class AuthController {
     }
 
     public function logout() {
-        session_start();
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
         session_destroy();
         echo json_encode(['message' => 'Logged out successfully']);
     }
 
     public function dashboard() {
-        session_start();
-        
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(['error' => 'Not authenticated']);
@@ -425,7 +443,6 @@ class AuthController {
     }
 
     private function requireAuth() {
-        session_start();
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);    
             echo json_encode(['error' => 'Authentication required']);

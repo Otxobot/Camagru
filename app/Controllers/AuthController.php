@@ -38,16 +38,12 @@ class AuthController {
                 return;
             }
 
-            //===============================================
-            //=ACUERDATE DE DESCOMENTAR ESTO!!!!!!!!!!!!!!!!=
-            //===============================================
-
-            // $complexityCheck = $this->isComplexPassword($input['password']);
-            // if ($complexityCheck !== true) {
-            //     http_response_code(400);
-            //     echo json_encode($complexityCheck);
-            //     return;
-            // }
+            $complexityCheck = $this->isComplexPassword($input['password']);
+            if ($complexityCheck !== true) {
+                http_response_code(400);
+                echo json_encode($complexityCheck);
+                return;
+            }
 
             if ($this->userModel->findByEmail($input['email'])) {
                 http_response_code(409);
@@ -264,11 +260,11 @@ class AuthController {
                     }
                     
                     // Uncomment when ready to enforce password complexity
-                    // $complexityCheck = $this->isComplexPassword($newPassword);
-                    // if ($complexityCheck !== true) {
-                    //     $this->renderResetPasswordResult(false, $complexityCheck['error']);
-                    //     return;
-                    // }
+                    $complexityCheck = $this->isComplexPassword($newPassword);
+                    if ($complexityCheck !== true) {
+                        $this->renderResetPasswordResult(false, $complexityCheck['error']);
+                        return;
+                    }
                     
                     $user = $this->userModel->findByResetToken($token);
                     
@@ -382,13 +378,13 @@ class AuthController {
         try {
             $input = json_decode(file_get_contents('php://input'), true);
             
-            if (!$input['email'] || !$input['password']) {
+            if (!$input['username'] || !$input['password']) {
                 http_response_code(400);
-                echo json_encode(['error' => 'Email and password required']);
+                echo json_encode(['error' => 'Username and password required']);
                 return;
             }
 
-            $user = $this->userModel->findByEmail($input['email']);
+            $user = $this->userModel->findByUsername($input['username']);
             
             if ($user && password_verify($input['password'], $user['password_hash'])) {
                 //Check if email is confirmed

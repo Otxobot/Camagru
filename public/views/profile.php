@@ -100,6 +100,16 @@ if (!isset($_SESSION['user_id'])) {
             </form>
         </div>
 
+        <div class="profile-section">
+            <h4 class="section-title">Notifications</h4>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="notify-on-comment" role="switch">
+                <label class="form-check-label" for="notify-on-comment">
+                    Email me when someone comments on my photo
+                </label>
+            </div>
+        </div>
+
         <div id="formMessage" class="error-message"></div>
 </div>
 </main>

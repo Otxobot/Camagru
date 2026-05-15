@@ -113,16 +113,12 @@ class ProfileController {
                 return;
             }
 
-            //===============================================
-            //=ACUERDATE DE DESCOMENTAR ESTO!!!!!!!!!!!!!!!!=
-            //===============================================
-
-            // $complexityCheck = $this->isComplexPassword($input['new_password']);
-            // if ($complexityCheck !== true) {
-            //     http_response_code(400);
-            //     echo json_encode($complexityCheck);
-            //     return;
-            // }
+            $complexityCheck = $this->isComplexPassword($input['new_password']);
+            if ($complexityCheck !== true) {
+                http_response_code(400);
+                echo json_encode($complexityCheck);
+                return;
+            }
 
             $passwordUpdated = $this->userModel->updatePassword(
                 $current_user['id'],
@@ -224,5 +220,77 @@ class ProfileController {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Server error updating email']);
         }
+    }
+
+    public function getNotifications() {
+        header('Content-Type: application/json');
+
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+            return;
+        }
+
+        $prefs = $this->userModel->getNotificationPreferences($_SESSION['user_id']);
+        echo json_encode([
+            'success' => true,
+            'notify_on_comment' => (bool)$prefs['notify_on_comment']
+        ]);
+    }
+
+    public function updateNotifications() {
+        header('Content-Type: application/json');
+
+        if (!\App\Core\Csrf::validate()) {
+            \App\Core\Csrf::reject();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Not authenticated']);
+            return;
+        }
+
+        try {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $notify = isset($input['notify_on_comment']) ? (bool)$input['notify_on_comment'] : true;
+
+            $result = $this->userModel->updateNotificationPreferences($_SESSION['user_id'], $notify);
+
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Notification preference updated']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Failed to update preference']);
+            }
+        } catch (\Exception $e) {
+            error_log('Notification update error: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Server error updating notification preference']);
+        }
+    }
+
+    private function isComplexPassword($password) {
+        if (strlen($password) < 8) {
+            return ['error' => 'Password must be at least 8 characters long'];
+        }
+
+        $errors = [];
+
+        if (!preg_match('/[A-Z]/', $password)) {
+            $errors[] = 'one uppercase letter';
+        }
+        if (!preg_match('/[a-z]/', $password)) {
+            $errors[] = 'one lowercase letter';
+        }
+        if (!preg_match('/[0-9]/', $password)) {
+            $errors[] = 'one number';
+        }
+
+        if (!empty($errors)) {
+            return ['error' => 'Password must contain: ' . implode(', ', $errors) . '.'];
+        }
+
+        return true;
     }
 }

@@ -2,6 +2,12 @@ function getCsrfToken() {
     return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 }
 
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -77,7 +83,7 @@ function createImageCard(image) {
             </div>
             <div class="card-body p-2">
                 <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">@${image.username}</small>
+                    <small class="text-muted">@${escapeHtml(image.username)}</small>
                     <small class="text-muted">${formattedDate}</small>
                 </div>
             </div>
@@ -251,8 +257,8 @@ function renderComments(comments) {
         <div class="comment mb-2">
             <div class="d-flex justify-content-between align-items-start">
                 <div>
-                    <strong class="small">@${comment.username}</strong>
-                    <p class="mb-1 small">${comment.content}</p>
+                    <strong class="small">@${escapeHtml(comment.username)}</strong>
+                    <p class="mb-1 small">${escapeHtml(comment.content)}</p>
                     <small class="text-muted">${new Date(comment.created_at).toLocaleDateString()}</small>
                 </div>
                 ${comment.user_id == window.currentUserId ? `

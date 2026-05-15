@@ -21,9 +21,6 @@ spl_autoload_register(function ($class) {
     }
 });
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -62,6 +59,8 @@ $router->post('/reset-password', 'AuthController@resetPassword');
 $router->post('/api/profile/update-username', 'ProfileController@updateUsername');
 $router->post('/api/profile/update-email', 'ProfileController@updateEmail');
 $router->post('/api/profile/update-password', 'ProfileController@updatePassword');
+$router->get('/api/profile/notifications', 'ProfileController@getNotifications');
+$router->post('/api/profile/update-notifications', 'ProfileController@updateNotifications');
 
 $router->get('/gallery', 'GalleryController@index');
 $router->get('/api/gallery', 'GalleryController@getImages');

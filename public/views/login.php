@@ -26,9 +26,9 @@ if (session_status() === PHP_SESSION_NONE) {
      <form id="login-form" action="/api/login" method="POST">
 
         <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" 
-                   required placeholder="you@example.com">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" id="username" name="username" class="form-control"
+                   required placeholder="Your username">
         </div>
 
         <div class="mb-3">

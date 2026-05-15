@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', handleAccountDeletion);
     }
+
+    const notifyToggle = document.getElementById('notify-on-comment');
+    if (notifyToggle) {
+        loadNotificationPreference(notifyToggle);
+        notifyToggle.addEventListener('change', () => handleNotificationChange(notifyToggle));
+    }
 })
 
 async function handleUsernameChange(e) {
@@ -197,6 +203,46 @@ async function handleEmailChange(e) {
         }
     } catch (error) {
         console.error('Error updating email:', error);
+        showMessage('An error occurred. Please try again.', 'error');
+    }
+}
+
+async function loadNotificationPreference(toggle) {
+    try {
+        const response = await fetch('/api/profile/notifications');
+        const data = await response.json();
+        if (data.success) {
+            toggle.checked = data.notify_on_comment;
+        }
+    } catch (error) {
+        console.error('Error loading notification preference:', error);
+    }
+}
+
+async function handleNotificationChange(toggle) {
+    try {
+        const response = await fetch('/api/profile/update-notifications', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+            },
+            body: JSON.stringify({ notify_on_comment: toggle.checked })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            showMessage(
+                toggle.checked ? 'Email notifications enabled' : 'Email notifications disabled',
+                'success'
+            );
+        } else {
+            toggle.checked = !toggle.checked;
+            showMessage(data.message || 'Failed to update preference', 'error');
+        }
+    } catch (error) {
+        console.error('Error updating notification preference:', error);
+        toggle.checked = !toggle.checked;
         showMessage('An error occurred. Please try again.', 'error');
     }
 }

@@ -23,11 +23,11 @@ async function handleLogin(event) {
 
     const formData = new FormData(event.target);
     const loginData = {
-        email: formData.get('email'),
+        username: formData.get('username'),
         password: formData.get('password')
     };
 
-    if (!loginData.email  || !loginData.password) {
+    if (!loginData.username || !loginData.password) {
         showMessage("All fields are required", 'error');
     }
 

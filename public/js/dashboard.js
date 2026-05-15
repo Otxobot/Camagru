@@ -2,6 +2,26 @@ function getCsrfToken() {
     return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
 }
 
+function showModal(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.classList.add('show');
+    document.body.classList.add('modal-open');
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show';
+    backdrop.id = id + '-backdrop';
+    document.body.appendChild(backdrop);
+}
+
+function hideModal(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'none';
+    el.classList.remove('show');
+    document.body.classList.remove('modal-open');
+    const backdrop = document.getElementById(id + '-backdrop');
+    if (backdrop) backdrop.remove();
+}
+
 let camera = null;
 let selectedSticker = null;
 let capturedImage = null;
@@ -39,6 +59,10 @@ function setupEventListeners() {
     document.getElementById('image-upload').addEventListener('change', handleImageUpload);
     
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+
+    document.querySelectorAll('#deleteModal [data-bs-dismiss="modal"]').forEach(btn => {
+        btn.addEventListener('click', () => hideModal('deleteModal'));
+    });
 }
 
 async function startCamera() {
@@ -340,8 +364,7 @@ function showDeleteModal(photoId, filePath) {
     document.getElementById('delete-preview').src = filePath;
     document.getElementById('confirm-delete-btn').setAttribute('data-photo-id', photoId);
     
-    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    modal.show();
+    showModal('deleteModal');
 }
 
 async function confirmDelete() {
@@ -360,8 +383,7 @@ async function confirmDelete() {
             showMessage('Photo deleted successfully', 'success');
             loadUserPhotos(); // Refresh thumbnails
             
-            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-            modal.hide();
+            hideModal('deleteModal');
         } else {
             showMessage(data.message || 'Failed to delete photo', 'error');
         }

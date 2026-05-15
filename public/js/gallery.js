@@ -8,6 +8,26 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
+function showModal(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.classList.add('show');
+    document.body.classList.add('modal-open');
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show';
+    backdrop.id = id + '-backdrop';
+    document.body.appendChild(backdrop);
+}
+
+function hideModal(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'none';
+    el.classList.remove('show');
+    document.body.classList.remove('modal-open');
+    const backdrop = document.getElementById(id + '-backdrop');
+    if (backdrop) backdrop.remove();
+}
+
 let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -18,6 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (commentForm) {
         commentForm.addEventListener('submit', handleCommentSubmit);
     }
+
+    document.querySelectorAll('#imageModal [data-bs-dismiss="modal"]').forEach(btn => {
+        btn.addEventListener('click', () => hideModal('imageModal'));
+    });
 });
 
 async function loadGallery(page = 1) {
@@ -174,8 +198,7 @@ async function openImageModal(imageId) {
         
         renderComments(image.comments);
         
-        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-        modal.show();
+        showModal('imageModal');
         
     } catch (error) {
         console.error('Error opening modal:', error);
